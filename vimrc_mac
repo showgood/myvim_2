@@ -7,57 +7,77 @@ set runtimepath=$HOME/myvim,$VIMRUNTIME
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc("$HOME/myvim/bundle")
 
-Bundle 'gmarik/vundle'
-Bundle 'kana/vim-textobj-user'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-speeddating'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'scrooloose/nerdtree'
-Bundle 'vim-scripts/YankRing.vim'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'Spaceghost/vim-matchit'
-Bundle 'kien/ctrlp.vim'
-Bundle 'vim-scripts/scratch.vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'gregsexton/gitv'
-Bundle 'tpope/vim-fugitive'
-Bundle 'klen/python-mode'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'SirVer/ultisnips'
-Bundle 'AsyncCommand'
-"Bundle 'vim-scripts/AutoComplPop'
-Bundle 'ReplaceWithRegister'
-Bundle 'Lokaltog/vim-easymotion'
-" Bundle 'Lokaltog/powerline'
-Bundle 'Lokaltog/vim-powerline'
-"Bundle 'ervandew/supertab'
-Bundle 'ZoomWin'
-Bundle 'vim-scripts/vimwiki'
-Bundle 'bufexplorer.zip'
-"Bundle 'xolox/vim-shell'
-Bundle 'vim-scripts/camelcasemotion'
-Bundle 'jeetsukumaran/vim-buffergator'
-Bundle 'chrisbra/NrrwRgn'
-Bundle 'vim-scripts/VisIncr'
-Bundle 'Mark'
-Bundle 'sjl/gundo.vim'
-"Bundle 'c:/wxm/misc.git'
-Bundle 'kana/vim-textobj-function'
-"Bundle 'Valloric/YouCompleteMe'
+"{{{ NeoBundle
+if has('vim_starting')
+  set nocompatible               " Be iMproved
 
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'tomasr/molokai'
-Bundle 'zaiste/Atom'
-Bundle 'w0ng/vim-hybrid'
-"}}} vundle bundles
+" Required:
+set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+" Required:
+call neobundle#rc(expand('$HOME/myvim/bundle'))
+
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'xolox/vim-notes'
+NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'Spaceghost/vim-matchit'
+NeoBundle 'showgood/tagbar'
+NeoBundle 'kana/vim-textobj-function'
+NeoBundle 'ReplaceWithRegister'
+NeoBundle 'showgood/misc_vim'
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'vim-scripts/VisIncr'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'Mark'
+NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
+NeoBundle 'xolox/vim-shell'
+NeoBundle 't9md/vim-choosewin'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundleDisable 'bling/vim-airline'  "not very useful to me
+NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'mbbill/undotree'
+NeoBundle 'goldfeld/vim-seek'
+NeoBundle 'chrisbra/csv.vim'
+NeoBundle 'bkad/CamelCaseMotion'
+"NeoBundle 'showgood/eclim'
+"NeoBundle 'jonathanfilip/vim-lucius'
+"NeoBundle 'zaiste/Atom'
+"NeoBundle 'tomasr/molokai'
+ "NeoBundle 'Shougo/neosnippet.vim'
+ "NeoBundle 'Shougo/neosnippet-snippets'
+ "NeoBundle 'tpope/vim-fugitive'
+"Bundle 'ZoomWin'
+
+ " You can specify revision/branch/tag.
+ "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+ " Required:
+ filetype plugin indent on
+
+ " If there are uninstalled bundles found on startup,
+ " this will conveniently prompt you to install them.
+NeoBundleCheck
+"}}}
 
 source $HOME/myvim/functions.vim
 source $HOME/myvim/vimrc_common
 
 autocmd!
 
-colorscheme Atom
+colorscheme solarized
 set gfn=Monaco:h12
 
 "open vimrc file in vertical window
