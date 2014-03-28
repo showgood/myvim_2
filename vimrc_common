@@ -1,0 +1,472 @@
+" {{{ vim settings
+filetype plugin on " enable loading the plugin for appropriate file type 
+
+let mapleader = ","
+let maplocalleader =","
+set termencoding=utf-8
+set encoding=utf-8
+set laststatus=2
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [ASCII=\%3.3b]\ [HEX=\%02.2B]\ [POS=%4l,%4v]\ [%p%%]\ [LEN=%L]
+set thesaurus+=$HOME/vimfiles/thesaur.txt
+set clipboard+=unnamed
+set nocompatible
+set tags=tags;/
+set viminfo=%,'50,\"100,n~/.viminfo
+
+if has ("mac")
+    set wildignore=*.o,*.obj,*.pyc,*.xib,*.png,*.jpg,*.icns,*.pva,*.pdf,*.zip,*.rar,*.eml,*.sj,*.pys,*.m4a,*.tif
+else
+    set wildignore=*.o,*.obj,*.pyc,*.swp,*.ico,*.pdb,*.ilk,*.dep,*.obmp,*.bin,*.bmp,*.jpg,.git,*.ti,*.dbo,*.a,*.obmpinfo,*.dll,.svn,objects/**
+endif
+
+" indent options
+"  see help cinoptions-values for more details
+" default '0{,0},0),:,0#,!^F,o,O,e' disable 0# for not ident preprocess
+" set cinkeys=0{,0},0),:,!^F,o,O,e
+set cinoptions=>s,e0,n0,f0,{0,}0,^0,:0,=s,l0,b0,g0,hs,ps,ts,is,+s,c3,C0,0,(0,us,U0,w0,W0,m0,j0,)20,*30,N-s
+
+set ut=500
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set list
+set noswapfile
+
+syn on
+
+"watch out.. no backup will be saved
+set nobackup
+set autoread
+set hidden " allow to change buffer without saving 
+set ruler " show the cursor position all the time
+set cmdheight=1 " 1 screen lines to use for the command-line 
+set showcmd " display incomplete commands
+set wildmenu " turn on wild menu, try typing :h and press <Tab> 
+set showmatch
+set gdefault
+set smartcase
+set ignorecase
+set incsearch
+set relativenumber
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set hlsearch
+set showcmd
+set showmode
+set si
+set ai
+set expandtab
+set sw=4
+" set tabstop=4
+set history=200 " keep 50 lines of command line history
+set copyindent    " copy the previous indentation on autoindenting
+" set smarttab
+set nowrapscan
+set dictionary=$HOME/myvim/words.txt
+set sessionoptions += "globals"
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,latin1
+set nocompatible
+"}}}
+
+source $HOME/myvim/vimrc_dict
+
+nnoremap dw "ddw
+nnoremap x "xx
+
+"quicker for something like :w
+nnoremap ; :
+
+"quicker escaping and save automatically
+inoremap <unique> jj <ESC>
+inoremap <unique> kk <C-O>
+
+" Use Q for formatting the current paragraph (or selection)
+vmap Q gq
+nmap Q gqap
+
+" imap <Leader>ymd   <C-R>=strftime("%y%m%d")<CR>
+" imap <Leader>mdy   <C-R>=strftime("%m/%d/%y")<CR>
+" imap <Leader>ndy   <C-R>=strftime("%b %d, %Y")<CR>
+" imap <Leader>hms   <C-R>=strftime("%T")<CR>
+" imap <Leader>ynd   <C-R>=strftime("%Y %b %d")<CR>
+imap nnow   <C-R>=strftime("%c")<CR>
+imap ddate <C-R>=strftime("%d/%m/%Y")<CR>
+"}}}
+
+" {{{ navigation related mappings
+" quck jump between two windows, just like C-6 for buffers
+au TabLeave * :let g:last_tab=tabpagenr()
+
+:command -nargs=0 CD :cd %:p:h
+
+fu! LastTab()
+     if !exists("g:last_tab")
+         return
+     endif
+     exe "tabn" g:last_tab
+endfu 
+
+nnoremap <silent> <M-6> :call LastTab()<cr>
+
+nnoremap <tab> %
+vnoremap <tab> %
+
+"make jump to exact cursor position of a mark easier
+nnoremap ' `
+
+nnoremap <space> <C-F>
+nnoremap <BS> <C-B>
+noremap <C-Tab> :tabn<cr>
+
+"window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Center display line after searches
+nnoremap n   nzz
+nnoremap N   Nzz
+"}}}
+"{{{search/replace related mappings
+    "{{{functions definition
+
+" Escape special characters in a string for exact matching.
+" This is useful to copying strings from the file to the search tool
+" Based on this - http://peterodding.com/code/vim/profile/autoload/xolox/escape.vim
+function! EscapeString (string)
+  let string=a:string
+  " Escape regex characters
+  let string = escape(string, '^$.*\/~[]')
+  " Escape the line endings
+  let string = substitute(string, '\n', '\\n', 'g')
+  return string
+endfunction
+
+" Get the current visual block for search and replaces
+" This function passed the visual block through a string escape function
+" Based on this - http://stackoverflow.com/questions/676600/vim-replace-selected-text/677918#677918
+function! GetVisual(escape) range
+  " Save the current register and clipboard
+  let reg_save = getreg('"')
+  let regtype_save = getregtype('"')
+  let cb_save = &clipboard
+  set clipboard&
+
+  " Put the current visual selection in the " register
+  normal! ""gvy
+  let selection = getreg('"')
+
+  " Put the saved registers and clipboards back
+  call setreg('"', reg_save, regtype_save)
+  let &clipboard = cb_save
+
+  "Escape any special characters in the selection
+  if a:escape == "true"
+      let escaped_selection = EscapeString(selection)
+      return escaped_selection
+  endif
+
+  return selection
+
+endfunction
+
+function! AckFunc(args)
+    let grepprg_bak=&grepprg
+    set grepprg=ack.pl\ -H\ --nocolor\ --nogroup
+    execute "silent! grep " . a:args
+    botright copen
+    let &grepprg=grepprg_bak
+endfunction
+
+function! ReplaceWithClipboard()
+    let stringUnderCursor = expand("<cword>")
+    let clipText = getreg("*")
+    exec '%s#\<'.stringUnderCursor.'\>#'.clipText
+endfunction
+"}}}
+
+command! -nargs=* -complete=file Ack :call AckFunc(<q-args>)
+
+"search all the lines match the current word under cursor in the whole file and 
+"list them in tne quickfix window
+" nmap <leader>lv :lv /<c-r>=expand("<cword>")<cr>/ %<cr>:lw<cr>
+nnoremap <C-F> :lv /<c-r>=expand("<cword>")<cr>/ %<cr>:lw<cr>
+
+"search word under cursor with Ack
+nmap <unique> <F3> :Ack <c-r>=expand("<cword>")<cr> --cpp
+
+"search with visual selection using Ack
+vmap <unique> <F3> <Esc>:Ack "<c-r>=GetVisual("true")<cr>" --cpp
+
+"search with clipboard content using Ack
+nnoremap <A-F3> :Ack "<c-r>=expand(getreg("*"))<cr>" --cpp
+
+"replace word under cursor with clipboard content
+nnoremap <S-F3> :call  ReplaceWithClipboard()<cr>
+
+"repeate last substitution for whole file
+nnoremap <C-F3> :0,$&<cr>
+
+" Pull word under cursor into LHS of a substitute
+nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
+
+" Pull visual selection into LHS of a substitute
+vmap <leader>z <Esc>:%s#<c-r>=GetVisual("true")<cr>#
+"}}}
+" go to the directory of current editing file in NerdTree
+:command -nargs=0 Here :NERDTree %:p:h
+:command -nargs=0 Cwd :execute 'NERDTree '.getcwd()
+
+nnoremap <leader>cn :cn<cr>
+nnoremap <leader>cp :cp<cr>
+
+"{{{ copy/paste related mappings
+"re-select last selection
+nnoremap <leader>gv `[v`]
+
+"yank the current line(without destroy current content in clipboard/unnamed
+"register) and paste it
+inoremap <C-S> <esc>"xyy"xp
+nnoremap <C-S> "xyy"xp
+
+"paste the content of unnamed register to the end of current line
+nmap <Leader>A A<space><esc>p<esc>
+
+"paste the content of unnamed register to the beginning of current line
+nmap <Leader>I I<space><esc>P<esc>
+
+"paste the content of unnamed register above the current line
+nmap <Leader>ap O"<esc>
+
+"paste the content of unnamed register below the current line
+nmap <Leader>bp o"<esc>
+
+nnoremap Y y$
+
+if has('win32')
+  "copy just filename for the file under edit to clipboard
+  nmap <leader>fs :let @*=substitute(expand("%:t"), "/", "\\", "g")<CR>
+
+  "copy filename with path for the file under edit to clipboard
+  nmap <leader>fl :let @*=substitute(expand("%"), "/", "\\", "g")<CR>
+else
+  nmap <leader>fs :let @*=expand("%:t")<CR>
+  nmap <leader>fl :let @*=expand("%")<CR>
+endif
+"}}}
+
+"clear the highlight for previous search
+nnoremap <leader><space> :noh<cr>
+
+map <F2> :NERDTreeToggle<cr>
+nnoremap <F12> :TagbarToggle<CR>
+
+"trim all trailing whitespace in the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
+"{{{window related mappings
+"Pressing ,sp will toggle and untoggle spell checking
+map <leader>sp :setlocal spell!<cr>
+
+"zoom window
+nnoremap <C-u> :ZoomWin<cr>
+"}}}
+
+"{{{settings for vimwiki
+let g:vimwiki_list = [{'path': $HOME.'/Dropbox/trunksync/notes',
+  \ 'path_html': $HOME.'/mywiki_html', 'ext':'.markdown',
+  \ 'diary_rel_path':'',
+  \ 'index':'HomePage', 'diary_link_count': 5, 'syntax':'markdown'},
+  \ {'path': $HOME.'/workwiki',
+  \ 'path_html' : $HOME.'/workwiki_html'}]
+
+let g:vimwiki_camel_case = 0
+
+function! GetWikiPath()
+    return g:vimwiki_list[0].path
+endfunction
+
+"todo: fix this later
+:command -nargs=1 SW :vimgrep <args> g:vimwiki_list[0].path.'/*.markdown'
+"}}}
+
+"{{{ quickfix related setting
+"make sure that when press enter on a line in quickfix window,
+"the cursor will stay in quickfix window
+augroup vimrcQFCRFix
+    " Prevent making duplicate autocommands
+    autocmd!
+    autocmd Filetype qf nnoremap <buffer> <CR> <CR><C-w>p
+augroup END
+
+nnoremap <F9> :call ToggleQuickFixWindow()<CR>
+
+"press leader + co in quickfix window it will isolate the
+"quickfix in a new tab and syntax highlight it
+map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+"}}}
+
+"{{{ Unite.vim settings
+let g:unite_enable_start_insert = 1
+"let g:unite_split_rule = "botright"
+"let g:unite_force_overwrite_statusline = 0
+"let g:unite_winheight = 10
+
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/', '\.svn/', '\.obj$', 'bin/', 'obj/',
+      \ '\.so$', '\.exe$', '\.a$', '\.dep$',
+      \ '\.dla$', '\.dba$', '\.o$', '\.dbo$',
+      \ '\.d$', '\.ti$', '\.map$', '\.obmp$',
+      \ '\.ico$', '\.RMSfont$', '\.bin$'
+      \ ], '\|'))
+
+call unite#custom#source(
+    \ 'buffer,file_rec/async,file_rec', 'matchers',
+    \ ['converter_tail', 'matcher_default'])
+call unite#custom#source(
+    \ 'file_rec/async,file_rec', 'converters',
+    \ ['converter_file_directory'])
+""call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"call unite#filters#sorter_default#use(['sorter_rank'])
+
+let g:unite_source_rec_max_cache_files = 10000
+call unite#custom#source('file_rec,file_rec/async',
+    \ 'max_candidates', 50)
+
+"nnoremap <leader>p :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
+"nnoremap <leader>p :Unite file_rec/async<cr>
+"nnoremap <silent> <Leader>mr :Unite -buffer-name=recent -winheight=10 file_mru<cr>
+nnoremap <Leader>o :Unite -buffer-name=buffers -winheight=10 buffer<cr>
+nnoremap <<F7>> :Unite -buffer-name=yank -winheight=10 history/yank<cr>
+nnoremap <leader>/ :Unite grep:.-iR:file<cr>
+autocmd FileType unite call s:unite_settings()
+
+"let g:unite_source_grep_command = 'ack.pl'
+"let g:unite_source_grep_default_opts =
+"\ '--no-heading --no-color -k -H'
+"let g:unite_source_grep_recursive_opt = ''
+
+function! s:unite_settings()
+  let b:SuperTabDisabled=1
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <silent><buffer><expr> <C-x> unite#do_action('split')
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
+"}}}
+
+"scientific calculator
+:command! -nargs=+ Calc :py print <args>
+:py from math import *
+
+"{{{ UltiSnips settings
+"let g:UltiSnipsSnippetsDir="$HOME/myvim/bundle/UltiSnips-2.0/UltiSnips"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "mysnippets"]
+nnoremap <leader>es <C-w><C-v><C-l>:UltiSnipsEdit<cr>
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+"}}}
+
+"{{{easymotion settings
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+"nmap s <Plug>(easymotion-s)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+" use <leader>s since s is taken by seek plugin
+nmap <leader>s <Plug>(easymotion-s2)
+
+" Turn on case sensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+"just use n/N will destroy the * functionality
+map  <leader>n <Plug>(easymotion-next)
+map  <leader>N <Plug>(easymotion-prev)
+"}}}
+
+" make Vim start in Insert mode in the command-line window.
+" au CmdwinEnter [/?] startinsert
+:command -nargs=0 Hc :call Htoc(getline('.'))<CR>
+nnoremap <leader>M  :call Htoc(getreg("*"))<CR>
+
+:command -nargs=0 Md :call Markdown2Html()
+
+" VimTip 329: A map for swapping words
+" http://vim.sourceforge.net/tip_view.php?tip_id=
+" Then when you put the cursor on or in a word, press "\sw", and
+" the word will be swapped with the next word.  The words may
+" even be separated by punctuation (such as "abc = def").
+nnoremap <unique> <silent><leader>sw "_yiw:s/\(\%#\w\+\)\(\W\+\)\(\w\+\)/\3\2\1/<cr><c-o>
+
+" Enhance '<' '>' , do not need to reselect the block after shift it.
+vnoremap <unique> < <gv
+vnoremap <unique> > >gv
+
+"{{{ customize for ctrlp plugin 
+nnoremap <leader>p :CtrlP<CR>
+:command -nargs=0 Rt :CtrlPRoot
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_dotfiles = 0
+let g:ctrlp_working_path_mode = ''
+let g:ctrlp_open_multiple_files = 'rjt'
+"search by filename only, not full path
+let g:ctrlp_by_filename = 1
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.git|\objects|\.svn)$',
+  \ 'file': '\.exe$\|\.so$\|\.dll$|\.obj$|\.dep$',
+  \ }
+nnoremap <unique> <F5> :CtrlPClearCache<cr>
+"}}}
+
+highlight TagbarHighlight guifg=red guibg=green
+
+"{{{ NERDCommenter settings
+nmap <unique> <F11> <plug>NERDCommenterToggle
+vmap <unique> <F11> <plug>NERDCommenterToggle
+imap <unique> <F11> <plug>NERDCommenterToggle
+"}}} NERDCommenter settings
+"add semicolon(;) at the end of line without changing cursor position
+nnoremap <leader>; mqA;<esc>`q
+
+" Don't jump when using * for search
+nnoremap * *<c-o>
+
+" Open a Quickfix window for the last search.
+nnoremap <silent> <leader>? :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
+
+nnoremap <leader>u viwU
+" Source visual selection
+vnoremap <leader>L y:execute @@<cr>
+" Source current line
+nnoremap <leader>L ^vg_y:execute @@<cr>
+nnoremap <leader>mr :CtrlPMRU<CR>
+
+" {{{ ShowMarks settings
+let g:showmarks_enable = 1
+let showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+" Ignore help, quickfix, non-modifiable buffers
+let showmarks_ignore_type = "hqm"
+" Hilight lower & upper marks
+let showmarks_hlline_lower = 1
+let showmarks_hlline_upper = 0 
+"}}}
+
+"quite useful, my own function
+:command -nargs=1 Gap :call GapFromMark(<f-args>)
+
+"/* vim: set foldmethod=marker: */

@@ -1,0 +1,11 @@
+"{{{ my dictionary configuration & abbreviation
+"open my dictionary file
+nnoremap <leader>ed <C-w><C-v><C-l>:e $HOME/myvim/words.txt<cr>
+
+iabbr hwo how
+iabbr fro for
+iabbr teh the
+iabbr ctor constructor
+iabbr dtor destructor
+iabbr exp Expiratory
+iabbr insp Inspiratory

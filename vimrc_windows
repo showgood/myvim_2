@@ -1,0 +1,306 @@
+set runtimepath=$HOME/myvim,$VIMRUNTIME
+let $TMP="c:/tmp"
+let $TEMP="c:/tmp"
+set directory=.,$TMP,$TEMP
+
+set shellquote=
+set shellxquote=
+set shellpipe=2>&1\|tee
+set shellredir=>%s\ 2>&1
+set shellslash
+let g:explorer=$HOME.'/soft/multicommander/MultiCommander.exe'
+let g:use_cygwin=1
+
+"{{{ NeoBundle
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+
+" Required:
+set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+" Required:
+call neobundle#rc(expand('$HOME/myvim/bundle'))
+
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'Spaceghost/vim-matchit'
+NeoBundle 'showgood/tagbar'
+NeoBundle 'kana/vim-textobj-function'
+NeoBundle 'ReplaceWithRegister'
+NeoBundle 'showgood/misc_vim'
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'vim-scripts/VisIncr'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'Mark'
+NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
+NeoBundle 'xolox/vim-shell'
+NeoBundle 't9md/vim-choosewin'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundleDisable 'bling/vim-airline'  "not very useful to me
+NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'mbbill/undotree'
+NeoBundle 'goldfeld/vim-seek'
+NeoBundle 'chrisbra/csv.vim'
+"NeoBundle 'showgood/eclim'
+"NeoBundle 'jonathanfilip/vim-lucius'
+"NeoBundle 'zaiste/Atom'
+"NeoBundle 'tomasr/molokai'
+ "NeoBundle 'Shougo/neosnippet.vim'
+ "NeoBundle 'Shougo/neosnippet-snippets'
+ "NeoBundle 'tpope/vim-fugitive'
+"Bundle 'ZoomWin'
+"Bundle 'vim-scripts/camelcasemotion'
+
+ " You can specify revision/branch/tag.
+ "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+ " Required:
+ filetype plugin indent on
+
+ " If there are uninstalled bundles found on startup,
+ " this will conveniently prompt you to install them.
+NeoBundleCheck
+"}}}
+
+set nocompatible
+filetype off
+
+autocmd!
+
+source $HOME/myvim/vimrc_common
+source $HOME/myvim/functions.vim
+"source $HOME/myvim/RMD.vim
+
+set dict="$HOME/myvim/words.txt"
+
+:command -nargs=0 GUI :cd $OPTIMA_GUI
+:command -nargs=0 MB :cd $OPTIMA_MB
+
+"open vimrc file in vertical window
+nnoremap <leader>ev <C-w><C-v><C-l>:e c:\wxm\myvim\vimrc_windows<cr>
+
+"{{{appearance configuration
+" those are acceptable colorschemes I have tried
+"colorscheme Atom
+" colorscheme molokai
+colorscheme solarized
+" colorscheme hybrid
+
+" disable menu & toolbar
+set guioptions-=m
+set guioptions-=T
+set gfn=Monaco:h10
+
+" make vim window maximized when startup
+autocmd GUIEnter * simalt ~x
+"}}}
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#same_filetypes = {}
+let g:neocomplete#same_filetypes._ = '_'
+let g:neocomplete#enable_auto_select=1
+"let g:neocomplete#sources = '_'
+"map [unite]f :Unite -no-split -start-insert file_rec/async<cr>
+"call unite#custom#source('file_rec', 'ignore_pattern', '*.obj')
+" When vimrc is edited, reload it
+"not working...
+"autocmd! bufwritepost vimrc source $MYVIMRC<cr>
+
+"disabled because conflict with mark.vim plugin
+" nnoremap *   *zz
+" nnoremap #   #zz
+"nnoremap g*  g*zz
+"nnoremap g#  g#z
+
+" {{{ SVN related mappings
+:command -nargs=0 Log :call ExecuteCommand("TortoiseProc.exe /command:log /path:", "%")
+:command -nargs=0 Diff :call ExecuteCommand("TortoiseProc.exe /command:diff /path:", "%")
+:command -nargs=0 Revert :call ExecuteCommand("TortoiseProc.exe /command:revert /path:", "%")
+:command -nargs=0 SvnAdd :call ExecuteCommand("TortoiseProc.exe /command:add /path:", "%")
+"}}}
+
+" {{{ customization for eclim
+" -------------------------------
+"  customization for eclim
+" -------------------------------
+nnoremap <silent> <leader>lf :LocateFile<cr>
+nnoremap <silent> <cr> :call DoSearch()<cr>
+" nnoremap <silent> <S-cr> :CSearch -p <c-r>=expand("<cword>")<cr> -s all -x references<cr>
+let g:EclimLocateFileCaseInsensitive='always'
+let g:EclimCSearchSingleResult='edit'
+let g:EclimTodoSearchExtensions = ['java', 'py', 'xml', 'cpp', 'hpp']
+let g:EclimSearchSkipList = ['obj', 'dep', 'dbo', 'obmp', 'o', 'ti',
+                            \'manifest', 'resource', 'RMSfont', 'exe',
+                            \'transform', 'dll']
+
+" inoremap <unique> <F6> :CCallHierarchy<cr>
+" nnoremap <unique> <F6> :CCallHierarchy<cr>
+
+nnoremap <F1> :ProjectGrep /<c-r>=expand("<cword>")<cr>/ **/*.xml
+let g:EclimProjectKeepLocalHistory = 1
+
+nnoremap <leader>de <C-w><C-v><C-l>:e $HOME/myvim/bundle/eclim-1.7.4/doc/vim/cheatsheet.txt<cr>
+map <c-F2> :ProjectTreeToggle<cr>
+
+" search via Google
+command -range -nargs=* Gl call eclim#web#SearchEngine(
+  \ 'http://www.google.com/search?q=<query>', <q-args>, <line1>, <line2>)
+" }}}
+
+"{{{ customization for making build easier
+nnoremap <unique> <F6> :AsyncMake -j<cr>
+inoremap <unique> <F6> :AsyncMake -j<cr>
+
+nnoremap <M-r> :AsyncMake run<cr>
+nnoremap <M-m> :AsyncMake -j<cr>
+"}}}
+
+"{{{interaction with explorere, shell
+"******* interaction with explorere, shell **********************
+function OpenShellIn(location)
+    " execute '!start c:/wxm/soft/Console2/Console.exe -r "/bin/xhere /bin/bash.exe '''.a:location.'"'
+    execute '!start C:/Program Files/ConEmu/ConEmu64.exe /dir '.a:location .' /single /cmd {bash}'
+endfunction
+
+function OpenDosCmdIn(location)
+    " execute '!start c:/wxm/soft/Console2/Console.exe -t DosCmd -d '.a:location
+    execute '!start C:/Program Files/ConEmu/ConEmu64.exe /single /dir '.a:location
+endfunction
+
+function OpenExplorerIn(location)
+    execute  '!start c:/wxm/soft/multicommander/MultiCommander.exe /OPEN '.a:location
+endfunction
+
+" open current file folder in dos prompt(Console)
+:command -nargs=0 Cmd :call OpenDosCmdIn('%:p:h')
+
+" open current file folder in Bash(Console)
+:command -nargs=0 Bash :call OpenShellIn('%:p:h')
+
+"open current file folder in multicommander
+:command -nargs=0 Exp :call OpenExplorerIn('%:p:h')
+
+"open the Current working directory in MultiCommander
+:command -nargs=0 Cwd :call OpenExplorerIn(getcwd())
+
+"open current working directory in Bash(Console)
+:command -nargs=0 BC :call OpenShellIn(getcwd())
+
+"open current working directory in Dos prompt(Console)
+:command -nargs=0 CC :call OpenDosCmdIn(getcwd())
+"******* END: interaction with explorere, shell ******************
+"}}}
+
+" :set switchbuf+=split
+
+:command -nargs=* Seq call GenSeq(<f-args>)
+
+" :command -nargs=* Grep :call MyGrep(<f-args>)
+" inoremap <unique> <F6> :Grep <c-r>=expand("<cword>")<cr> <c-r>=expand(getcwd())<cr> cpp
+" nnoremap <unique> <F6> :Grep <c-r>=expand("<cword>")<cr> <c-r>=expand(getcwd())<cr> cpp
+
+function! TurnOnSplitBuf()
+    set switchbuf+=split
+endfunction
+
+function! ShiftEnter()
+    if &filetype ==# 'cpp'
+        exec "CSearch -p ".expand("<cword>")." -s all -x references"
+    elseif &filetype ==# 'xml'
+        exec "vimgrep /".expand("<cword>")."/ **/*.xml"
+    elseif &buftype ==# 'quickfix'
+        set switchbuf+=split
+        echom 'in quickfix'
+        call feedkeys("\<CR>")
+        " todo: not working, reset this open buffer will not in split window
+        " set switchbuf-=split
+    endif
+endfunction
+
+nnoremap  <S-cr> :call ShiftEnter()<cr>
+
+":command -nargs=0 FarMenu :tabedit C:\Documents and Settings\xiaomingw\Application Data\Far Manager\Profile\FarMenu.ini
+
+function! DoFilter(pattern)
+let @a=""
+exec 'v/'.a:pattern.'/y A'
+let @*=@a
+endfunction
+
+:command -nargs=* Filter :call DoFilter(<f-args>)
+
+let g:shell_mappings_enabled=0
+
+" {{{ folding
+" autocmd Syntax c,cpp,vim,xml,html,xhtml setlocal foldmethod=syntax
+" autocmd Syntax c,cpp,vim,xml,html,xhtml,perl normal zR
+
+" set foldlevelstart=0
+" set foldmethod=syntax
+" set foldnestmax=2
+
+" Space to toggle folds.
+" nnoremap <space> za
+" vnoremap <space> za
+
+" Make zO recursively open whatever top level fold we're in, no matter where the
+" cursor happens to be.
+nnoremap zO zCzO
+
+" Use ,z to "focus" the current fold.
+nnoremap <leader>Z zMzvzz
+" }}}
+
+:command -nargs=0 Comp :call CompareSideBySide()
+:command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
+nnoremap <leader>sf :call StartFolding()<CR>
+map <silent> <unique> <Leader>ll <Plug>CRV_CRefVimInvoke
+
+nmap <leader>ss :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>sg :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>sc :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>st :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>se :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <leader>sf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <leader>si :cs find i ^<C-R>=expand("%:t")<CR>$<CR>
+nmap <leader>sd :cs find d <C-R>=expand("<cword>")<CR><CR>
+set cscopequickfix=s-,c-,d-,i-,t-,e-,g-,f-
+
+function! CscopeT(pattern)
+    let cmd = "cs find t ".a:pattern
+    exec cmd
+endfunction
+
+:command -nargs=* St :call CscopeT(<f-args>)
+
+vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
+
+:command -nargs=0 Dropbox :cd c:/wxm/Dropbox/Write/
+:command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
+
+let g:yankring_max_element_length=900000
+let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
+
+nnoremap <leader>w :ChooseWin<cr>
+nnoremap <F8> :!/usr/bin/find $OPTIMA_MB -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hpp' > cscope.files<CR>
+  \:!cscope -b -i cscope.files -f cscope.out<CR>
+  \:cs reset<CR>
+let g:seek_enable_jumps = 1
+"/* vim: set foldmethod=marker: */

@@ -1,0 +1,64 @@
+set nocompatible
+filetype off
+
+set runtimepath=$HOME/myvim,$VIMRUNTIME
+
+"{{{ vundle bundles
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc("$HOME/myvim/bundle")
+
+Bundle 'gmarik/vundle'
+Bundle 'kana/vim-textobj-user'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-speeddating'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'scrooloose/nerdtree'
+Bundle 'vim-scripts/YankRing.vim'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'Spaceghost/vim-matchit'
+Bundle 'kien/ctrlp.vim'
+Bundle 'vim-scripts/scratch.vim'
+Bundle 'majutsushi/tagbar'
+Bundle 'gregsexton/gitv'
+Bundle 'tpope/vim-fugitive'
+Bundle 'klen/python-mode'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'SirVer/ultisnips'
+Bundle 'AsyncCommand'
+"Bundle 'vim-scripts/AutoComplPop'
+Bundle 'ReplaceWithRegister'
+Bundle 'Lokaltog/vim-easymotion'
+" Bundle 'Lokaltog/powerline'
+Bundle 'Lokaltog/vim-powerline'
+"Bundle 'ervandew/supertab'
+Bundle 'ZoomWin'
+Bundle 'vim-scripts/vimwiki'
+Bundle 'bufexplorer.zip'
+"Bundle 'xolox/vim-shell'
+Bundle 'vim-scripts/camelcasemotion'
+Bundle 'jeetsukumaran/vim-buffergator'
+Bundle 'chrisbra/NrrwRgn'
+Bundle 'vim-scripts/VisIncr'
+Bundle 'Mark'
+Bundle 'sjl/gundo.vim'
+"Bundle 'c:/wxm/misc.git'
+Bundle 'kana/vim-textobj-function'
+"Bundle 'Valloric/YouCompleteMe'
+
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'tomasr/molokai'
+Bundle 'zaiste/Atom'
+Bundle 'w0ng/vim-hybrid'
+"}}} vundle bundles
+
+source $HOME/myvim/functions.vim
+source $HOME/myvim/vimrc_common
+
+autocmd!
+
+colorscheme Atom
+set gfn=Monaco:h12
+
+"open vimrc file in vertical window
+nnoremap <leader>ev <C-w><C-v><C-l>:e ~/myvim/vimrc_mac<cr>
