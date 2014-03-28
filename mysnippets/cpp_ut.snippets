@@ -1,0 +1,32 @@
+snippet tc "new test cases(not test function)"
+// ${1:desc}
+{
+    $0
+}
+endsnippet
+
+snippet nc "new test case"
+CPPUNIT_TEST(test${1:Something});
+void test$1();
+
+void `!p snip.rv = snip.basename`::test$1()
+{
+    $0
+}
+endsnippet
+
+snippet caf "CPPUNIT_ASSERT_ASSERTION_FAIL"
+CPPUNIT_ASSERT_ASSERTION_FAIL(testObj.${1});
+endsnippet
+
+snippet cap "CPPUNIT_ASSERT_ASSERTION_PASS"
+CPPUNIT_ASSERT_ASSERTION_PASS(${1});
+endsnippet
+
+snippet cae "CPPUNIT_ASSERT_EQUAL"
+CPPUNIT_ASSERT_EQUAL(${1:expression}, ${2:target});
+endsnippet
+
+snippet ca "CPPUNIT_ASSERT"
+CPPUNIT_ASSERT(${1:left} ${2:==} ${3:right});
+endsnippet

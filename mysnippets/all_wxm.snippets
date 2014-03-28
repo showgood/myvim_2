@@ -1,0 +1,21 @@
+global !p
+def complete(t, opts):
+    if t:
+        opts = [m[len(t):] for m in opts if m.startswith(t)]
+    if len(opts) == 1:
+        return opts[0]
+
+    return "(" + '|'.join(opts) + ")"
+endglobal
+
+snippet td "MY TODO"
+//MY_TODO:$0
+endsnippet
+
+snippet p "put visual selection in ()"
+(${VISUAL})
+endsnippet
+
+snippet a "put visual selection in <>"
+<${VISUAL}>
+endsnippet
