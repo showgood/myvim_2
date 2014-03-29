@@ -1,3 +1,7 @@
+snippet Inc "#include local header (inc)"
+#include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
+endsnippet
+
 snippet inv "include with clipboard content"
 #include "`!v getreg("*")`"
 endsnippet
@@ -14,17 +18,25 @@ snippet in "#include xxx.hpp" !b
 #include "${1:header}.hpp"
 endsnippet
 
+snippet un "using namespace" b
+using namespace ${1:UserInterface};
+endsnippet
+
+snippet ustd "using namespace std" b
+using namespace std;
+endsnippet
+
 snippet forui "for int loop (fori)"
 for (unsigned ${1:i} = ${3:0}; $1 < ${2:count}; ++$1)
 {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+    ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
 }
 endsnippet
 
-snippet forii "for int loop (fori)"
+snippet fori "for int loop (fori)"
 for (int ${1:i} = ${3:0}; $1 < ${2:count}; ++$1)
 {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+    ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
 }
 endsnippet
 
@@ -131,14 +143,15 @@ endsnippet
 
 snippet bv "put visual selection in a block"
 {
-${VISUAL:}
+    ${VISUAL:}
 }
 endsnippet
 
 snippet ex "extract the visual selection into a new function for refactor purpose"
 ${1:void} `!p snip.rv = snip.basename`::${2:function}(${3:arguments})
 {
-${VISUAL:}
+    ${VISUAL:}
+    ${4}
 }
 endsnippet
 
@@ -190,14 +203,6 @@ endsnippet
 
 snippet sca "static cast" w
 static_cast<$1>(${VISUAL})
-endsnippet
-
-snippet un "using namespace" b
-using namespace ${1:UserInterface};
-endsnippet
-
-snippet ustd "using namespace std" b
-using namespace std;
 endsnippet
 
 snippet cwp "Console.WriteLine with parameters" b
