@@ -403,7 +403,9 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
 " use <leader>s since s is taken by seek plugin
-nmap <leader>s <Plug>(easymotion-s2)
+map  s <Plug>(easymotion-sn)
+omap s <Plug>(easymotion-tn)
+nmap f <Plug>(easymotion-sl2)
 
 " Turn on case sensitive feature
 let g:EasyMotion_smartcase = 1
@@ -411,8 +413,8 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
+"map  / <Plug>(easymotion-sn)
+"omap / <Plug>(easymotion-tn)
 "just use n/N will destroy the * functionality
 map  <leader>n <Plug>(easymotion-next)
 map  <leader>N <Plug>(easymotion-prev)
