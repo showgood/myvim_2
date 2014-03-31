@@ -86,8 +86,6 @@ source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
 "source $HOME/myvim/RMD.vim
 
-set dict="$HOME/myvim/words.txt"
-
 :command -nargs=0 GUI :cd $OPTIMA_GUI
 :command -nargs=0 MB :cd $OPTIMA_MB
 
@@ -285,14 +283,13 @@ vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
 :command -nargs=0 Dropbox :cd c:/wxm/Dropbox/Write/
 :command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
 
-let g:yankring_max_element_length=900000
 let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
 
-nnoremap <leader>w :ChooseWin<cr>
+nnoremap <leader>e :ChooseWin<cr>
+
 nnoremap <F8> :!/usr/bin/find $OPTIMA_MB -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hpp' > cscope.files<CR>
   \:!cscope -b -i cscope.files -f cscope.out<CR>
   \:cs reset<CR>
-let g:seek_enable_jumps = 1
 
 let g:notes_directories = ['~/Dropbox/RMD_notes']
 let g:notes_suffix = '.txt'
