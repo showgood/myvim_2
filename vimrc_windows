@@ -10,6 +10,7 @@ set shellpipe=2>&1\|tee
 set shellredir=>%s\ 2>&1
 set shellslash
 let g:explorer=$HOME.'/soft/multicommander/MultiCommander.exe'
+let g:console=$HOME.'/soft/cm_der/vendor/conemu-maximus5/ConEmu64.exe'
 let g:use_cygwin=1
 
 "{{{ NeoBundle
@@ -165,17 +166,16 @@ nnoremap <M-m> :AsyncMake -j<cr>
 "{{{interaction with explorere, shell
 "******* interaction with explorere, shell **********************
 function OpenShellIn(location)
-    " execute '!start c:/wxm/soft/Console2/Console.exe -r "/bin/xhere /bin/bash.exe '''.a:location.'"'
-    execute '!start C:/Program Files/ConEmu/ConEmu64.exe /dir '.a:location .' /single /cmd {bash}'
+    let cmd='!start '.g:console. ' /dir '.a:location . ' /single /cmd {bash}'
+    execute cmd
 endfunction
 
 function OpenDosCmdIn(location)
-    " execute '!start c:/wxm/soft/Console2/Console.exe -t DosCmd -d '.a:location
-    execute '!start C:/Program Files/ConEmu/ConEmu64.exe /single /dir '.a:location
+    execute '!start '. g:console. ' /single /dir '.a:location
 endfunction
 
 function OpenExplorerIn(location)
-    execute  '!start c:/wxm/soft/multicommander/MultiCommander.exe /OPEN '.a:location
+    execute  '!start '. g:explorer . ' /OPEN '.a:location
 endfunction
 
 " open current file folder in dos prompt(Console)
@@ -201,10 +201,6 @@ endfunction
 " :set switchbuf+=split
 
 :command -nargs=* Seq call GenSeq(<f-args>)
-
-" :command -nargs=* Grep :call MyGrep(<f-args>)
-" inoremap <unique> <F6> :Grep <c-r>=expand("<cword>")<cr> <c-r>=expand(getcwd())<cr> cpp
-" nnoremap <unique> <F6> :Grep <c-r>=expand("<cword>")<cr> <c-r>=expand(getcwd())<cr> cpp
 
 function! TurnOnSplitBuf()
     set switchbuf+=split
