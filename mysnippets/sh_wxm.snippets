@@ -1,0 +1,51 @@
+snippet argc "memorizable name for $#(number of arguments)"
+"$#"
+endsnippet
+
+snippet argv "memorizable name for $@(whole arguments in single string)"
+"$@"
+endsnippet
+
+snippet size() "memorizable name for getting array size"
+${#array[@]}
+endsnippet
+
+snippet optparse "option argument parse"
+while getopts "hf:t:" OPTION
+do
+    case $OPTION in
+        h)
+            usage
+            exit 1
+            ;;
+        f)
+        ${1:option1}=$OPTARG
+        ;;
+        t)
+        ${2:option2}=$OPTARG
+        ;;
+        ?)
+        usage
+        exit
+        ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+endsnippet
+
+snippet usage "usage() function"
+function usage()
+{
+cat << EOF
+usage: $0 [options] {non-option arguments}
+
+This script do this.. that..
+
+OPTIONS:
+   -h                     Show this message
+   -t [option2]     option2 argument description
+   -f [option1]     option1 argument description
+EOF
+}
+endsnippet
