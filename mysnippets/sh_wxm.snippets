@@ -6,8 +6,48 @@ snippet argv "memorizable name for $@(whole arguments in single string)"
 "$@"
 endsnippet
 
-snippet size() "memorizable name for getting array size"
-${#array[@]}
+snippet size()  "memorizable name for getting array size" !a
+${#${1:array}[@]}
+endsnippet
+
+snippet strlen() "string length"
+${#${1:string}}
+endsnippet
+
+snippet substr(0) "substring extraction"
+${${1:string}:${2:position}}
+endsnippet
+
+snippet substr() "substring extraction"
+${${1:string}:${2:position}:${3:length}}
+endsnippet
+
+snippet delForward "Deletes shortest match of $substring from front of $string."
+${${1:string}#${2:substring}}
+endsnippet
+
+snippet delLongForward "Deletes longest match of $substring from front of $string."
+${${1:string}##${2:substring}}
+endsnippet
+
+snippet base "get the base path out of path (if filename not included)"
+${1:basepath}=${${2:path}%/}
+endsnippet
+
+snippet basef "get the base path out of path (contains filename)"
+${1:basepath}=${${2:path}%/*}
+endsnippet
+
+snippet fname "get ONLY filename out of full path (contains filename)"
+${1:filename_wo_path}=${${2:filename_with_path}##*/}
+endsnippet
+
+snippet fbase "get ONLY filename without extension"
+${1:filename_wo_extension}=${${2:filename}%.*}
+endsnippet
+
+snippet ext "get filename extension"
+${1:extension}=${${2:filename}##*.}
 endsnippet
 
 snippet optparse "option argument parse"

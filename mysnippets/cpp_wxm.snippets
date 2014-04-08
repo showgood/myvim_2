@@ -18,6 +18,13 @@ snippet in "#include xxx.hpp" !b
 #include "${1:header}.hpp"
 endsnippet
 
+snippet ifv "if .. (if)"
+if (${VISUAL:})
+{
+    ${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+}
+endsnippet
+
 snippet un "using namespace" b
 using namespace ${1:UserInterface};
 endsnippet

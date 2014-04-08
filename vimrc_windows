@@ -59,6 +59,7 @@ NeoBundle 'chrisbra/csv.vim'
 NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'dkprice/vim-easygrep'
+NeoBundle 'vimwiki'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
@@ -259,6 +260,14 @@ nnoremap <leader>Z zMzvzz
 nnoremap <leader>sf :call StartFolding()<CR>
 "map <silent> <unique> <Leader>ll <Plug>CRV_CRefVimInvoke
 
+"0 or s: Find this C symbol
+"1 or g: Find this definition
+"2 or d: Find functions called by this function
+"3 or c: Find functions calling this function
+"4 or t: Find this text string
+"6 or e: Find this egrep pattern
+"7 or f: Find this file
+"8 or i: Find files #including this file
 nmap <leader>ss :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>sg :cs find g <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>sc :cs find c <C-R>=expand("<cword>")<CR><CR>
@@ -289,6 +298,6 @@ nnoremap <F8> :!/usr/bin/find $OPTIMA_MB -iname '*.c' -o -iname '*.cpp' -o -inam
   \:!cscope -b -i cscope.files -f cscope.out<CR>
   \:cs reset<CR>
 
-let g:notes_directories = ['~/Dropbox/RMD_notes']
+let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']
 let g:notes_suffix = '.txt'
 "/* vim: set foldmethod=marker: */
