@@ -35,12 +35,6 @@ int main(int argc, char *argv[])
 }
 endsnippet
 
-snippet for "for loop (for)"
-for (${2:i} = 0; $2 < ${1:count}; ${3:++$2})
-{
-    ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
-}
-endsnippet
 
 snippet enum "Enumeration"
 enum ${1:name} { $ };
@@ -116,19 +110,15 @@ endsnippet
 snippet st "struct"
 struct ${1:`!p snip.rv = (snip.basename or "name") + "_t"`}
 {
-	${0:/* data */}
+    ${0:/* data */}
 };
 endsnippet
 
-snippet fun "function" b
+snippet func "function implementation" b
 ${1:void} ${2:function_name}(${3})
 {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+    ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
 }
-endsnippet
-
-snippet fund "function declaration" b
-${1:void} ${2:function_name}(${3});
 endsnippet
 
 # vim:ft=snippets:

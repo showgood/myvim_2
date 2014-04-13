@@ -51,6 +51,7 @@ NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
 NeoBundle 'chrisbra/csv.vim'
 NeoBundle 'bkad/CamelCaseMotion'
+NeoBundle 'vimwiki'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
@@ -102,3 +103,6 @@ endif
 let g:neocomplete#sources#file_include#exts.cpp =
 \ ['', 'h', 'hpp']
 syn on
+
+let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']
+let g:notes_suffix = '.txt'

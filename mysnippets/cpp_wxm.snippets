@@ -1,3 +1,95 @@
+snippet 2darray "2d array"
+${1:int}** ${2:grid} = new $1*[${3:ROW}];
+for (int i = 0; i < $3; ++i)
+{
+    $2[i] = new $1[${4:COLUMN}];
+}
+endsnippet
+
+snippet for2 "two level loop"
+for (int i = 0; i < ${1:l}; ++i)
+{
+    for (int j = 0; j < ${2:k}; ++j)
+    {
+        ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+    }
+}
+endsnippet
+
+snippet ~ "home"
+/Users/showgood/
+endsnippet
+
+snippet input "ifstream input(input.txt)"
+ifstream input("input.txt");
+endsnippet
+
+snippet out "ofstream out(out.txt)"
+ofstream out("out.txt");
+endsnippet
+
+snippet freopen "freopen"
+freopen("input.txt", "r", stdin);
+freopen("out.txt", "w", stdout);
+endsnippet
+
+snippet rt "return"
+return ${1:0};
+endsnippet
+
+snippet skl "cpp skeleton file with main()"
+#include <iostream>
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+    return 0;
+}
+endsnippet
+
+snippet pbk "vector.push_back()"
+${1:vector}.push_back($2);
+endsnippet
+
+snippet forj "for loop (--i)"
+for (${1:i} = ${2:count}; $1 ${3:>=} ${4:0}; ${5:--$1})
+{
+    ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
+}
+endsnippet
+
+snippet vt "std::vector (v)"
+std::vector<${1:int}> $2;
+endsnippet
+
+snippet vi "std::vector (int)"
+std::vector<int> $1;
+endsnippet
+
+snippet vs "std::vector (string)"
+std::vector<string> $1;
+endsnippet
+
+snippet map "std::map (map)"
+std::map<${1:int}, ${2:string}> $3;
+endsnippet
+
+snippet mtc "multiple test cases"
+int testCase = 0;
+cin >> testCase;
+
+while (testCase)
+{
+    ${1:do something}
+    --testCase;
+}
+endsnippet
+
+snippet algo "#include <algorithm>"
+#include <algorithm>
+endsnippet
+
 snippet Inc "#include local header (inc)"
 #include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
 endsnippet
@@ -33,14 +125,14 @@ snippet ustd "using namespace std" b
 using namespace std;
 endsnippet
 
-snippet forui "for int loop (fori)"
+snippet forui "for unsigned i loop (++i)"
 for (unsigned ${1:i} = ${3:0}; $1 < ${2:count}; ++$1)
 {
     ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
 }
 endsnippet
 
-snippet fori "for int loop (fori)"
+snippet fori "for int loop (++i)"
 for (int ${1:i} = ${3:0}; $1 < ${2:count}; ++$1)
 {
     ${VISUAL}${0:${VISUAL/(.*)/(?1::\/* code *\/)/}}
@@ -108,18 +200,18 @@ private:
 };
 endsnippet
 
-snippet fc "function implementation"
+snippet cfunc "class member function implementation"
 ${1:void} ${2:class}::${3:function}(${4:argument})
 {
     ${5:/*code*/}
 }
 endsnippet
 
-snippet fd "function declaration"
-${1:void} ${2:function}(${4:argument});
+snippet fund "function declaration"
+${1:void} ${2:function}(${3:argument});
 endsnippet
 
-snippet cfd "const function declaration"
+snippet cfund "const function declaration"
 ${1:void} ${2:function}(${4:argument}) const;
 endsnippet
 
@@ -203,7 +295,7 @@ snippet debugstr "debug string"
 }
 endsnippet
 
-snippet stc "static const declaration and definition" b
+snippet sco "static const declaration and definition" b
 static const ${1:unsigned} ${2:var};
 const $1 `!p snip.rv = snip.basename`::$2 = ${3};
 endsnippet
@@ -217,3 +309,5 @@ Console.WriteLine("${2:`!p
 snip.rv = ' '.join(['{' + str(i) + '}' for i in range(t[1].count(','))])
 `}"${1:, something});
 endsnippet
+
+# vim:ft=snippets:
