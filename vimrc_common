@@ -500,8 +500,6 @@ nnoremap <leader>mr :CtrlPMRU<CR>
 "quite useful, my own function
 :command -nargs=1 Gap :call GapFromMark(<f-args>)
 
-syn on
-
 "====[ Make the 81st column stand out ]====================
 " OR ELSE just the 81st column of wide lines...
 highlight ColorColumn ctermbg=magenta

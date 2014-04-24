@@ -329,26 +329,6 @@ endfunction
 nnoremap <silent> n   n:call HLNext(0.4)<cr>
 nnoremap <silent> N   N:call HLNext(0.4)<cr>
 
-"====[ Make the 81st column stand out ]====================
-" OR ELSE just the 81st column of wide lines...
-highlight ColorColumn ctermbg=magenta
-call matchadd('ColorColumn', '\%81v', 100)
-
-"====[ Swap v and CTRL-V, because Block mode is more useful that Visual mode "]======
-nnoremap    v   <C-V>
-nnoremap <C-V>     v
-
-vnoremap    v   <C-V>
-vnoremap <C-V>     v
-
-vmap <expr>  ++  VMATH_YankAndAnalyse()
-nmap ++  vip++
-vmap  <expr>  <LEFT>   DVB_Drag('left') 
-vmap  <expr>  <RIGHT>  DVB_Drag('right')
-vmap  <expr>  <DOWN>   DVB_Drag('down')
-vmap  <expr>  <UP>     DVB_Drag('up') 
-vmap  <expr>  D        DVB_Duplicate()
-syn on
 "free mapping so far
 ",a
 ",d
@@ -363,4 +343,5 @@ syn on
 ",v
 ",x
 ",y
+syn on
 "/* vim: set foldmethod=marker: */
