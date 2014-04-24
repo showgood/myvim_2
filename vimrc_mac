@@ -84,24 +84,6 @@ set gfn=Monaco:h12
 "open vimrc file in vertical window
 nnoremap <leader>ev <C-w><C-v><C-l>:e ~/myvim/vimrc_mac<cr>
 
-set dict="~/myvim/words.txt"
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'text' : $HOME.'/myvim/words.txt',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-    \ }
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-if !exists('g:neocomplete#sources#include#paths')
-  let g:neocomplete#sources#include#paths = {}
-endif
-let g:neocomplete#sources#include#paths.cpp = '~/CodingPractice/'
-if !exists('g:neocomplete#sources#file_include#exts')
-  let g:neocomplete#sources#file_include#exts = {}
-endif
-let g:neocomplete#sources#file_include#exts.cpp =
-\ ['', 'h', 'hpp']
 syn on
 
 let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']

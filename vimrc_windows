@@ -68,7 +68,6 @@ NeoBundle 'vimwiki'
  "NeoBundle 'Shougo/neosnippet-snippets'
  "NeoBundle 'tpope/vim-fugitive'
 "Bundle 'ZoomWin'
-"Bundle 'vim-scripts/camelcasemotion'
 
  " You can specify revision/branch/tag.
  "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -81,13 +80,13 @@ NeoBundle 'vimwiki'
 NeoBundleCheck
 "}}}
 
-set nocompatible
 filetype off
-
-autocmd!
 
 source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
+
+autocmd!
+
 "source $HOME/myvim/RMD.vim
 
 :command -nargs=0 GUI :cd $OPTIMA_GUI
@@ -298,6 +297,70 @@ nnoremap <F8> :!/usr/bin/find $OPTIMA_MB -iname '*.c' -o -iname '*.cpp' -o -inam
   \:!cscope -b -i cscope.files -f cscope.out<CR>
   \:cs reset<CR>
 
-let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']
+let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
 let g:notes_suffix = '.txt'
+let g:notes_title_sync = 'no'
+command! -nargs=* FW call FilterToNewWindow(<args>)
+
+function! FilterToNewWindow(script)
+    let TempFile = tempname()
+    let SaveModified = &modified
+    exe 'w ' . TempFile
+    let &modified = SaveModified
+    exe 'split ' . TempFile
+    echom a:script
+    exe '%! ' . a:script
+endfunction
+
+" OR ELSE just highlight the match in red...
+function! HLNext (blinktime)
+    highlight WhiteOnRed ctermfg=white ctermbg=red
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+    let target_pat = '\c\%#'.@/
+    let ring = matchadd('WhiteOnRed', target_pat, 101)
+    redraw
+    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+    call matchdelete(ring)
+    redraw
+endfunction
+
+" This rewires n and N to do the highlighing...
+nnoremap <silent> n   n:call HLNext(0.4)<cr>
+nnoremap <silent> N   N:call HLNext(0.4)<cr>
+
+"====[ Make the 81st column stand out ]====================
+" OR ELSE just the 81st column of wide lines...
+highlight ColorColumn ctermbg=magenta
+call matchadd('ColorColumn', '\%81v', 100)
+
+"====[ Swap v and CTRL-V, because Block mode is more useful that Visual mode "]======
+nnoremap    v   <C-V>
+nnoremap <C-V>     v
+
+vnoremap    v   <C-V>
+vnoremap <C-V>     v
+
+vmap <expr>  ++  VMATH_YankAndAnalyse()
+nmap ++  vip++
+vmap  <expr>  <LEFT>   DVB_Drag('left') 
+vmap  <expr>  <RIGHT>  DVB_Drag('right')
+vmap  <expr>  <DOWN>   DVB_Drag('down')
+vmap  <expr>  <UP>     DVB_Drag('up') 
+vmap  <expr>  D        DVB_Duplicate()
+syn on
+"free mapping so far
+",a
+",d
+",f
+",g
+",h
+",i
+",l
+",q
+",r
+",t
+",v
+",x
+",y
 "/* vim: set foldmethod=marker: */

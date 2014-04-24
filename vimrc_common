@@ -6,7 +6,7 @@ let maplocalleader =","
 set termencoding=utf-8
 set encoding=utf-8
 set laststatus=2
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [ASCII=\%3.3b]\ [HEX=\%02.2B]\ [POS=%4l,%4v]\ [%p%%]\ [LEN=%L]
+set statusline=%F%m%r%h%w\ [%{&ff}]\ [A=\%3.3b]\ [H=\%02.2B]\ [%4l,%4v]\ [%p%%]\ [LEN=%L]
 set thesaurus+=$HOME/vimfiles/thesaur.txt
 set clipboard+=unnamed
 set nocompatible
@@ -49,8 +49,6 @@ set incsearch
 set relativenumber
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set hlsearch
-set showcmd
-set showmode
 set si
 set ai
 set expandtab
@@ -63,7 +61,7 @@ set nowrapscan
 set dictionary=$HOME/myvim/words.txt
 set sessionoptions += "globals"
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,latin1
-set nocompatible
+set nosmd " don't show mode, otherwise vmath won't work properly
 "}}}
 
 source $HOME/myvim/vimrc_dict
@@ -382,6 +380,8 @@ let g:neocomplete#enable_auto_select=1
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'text' : $HOME.'/myvim/words.txt',
+    \ 'markdown' : $HOME.'/myvim/words.txt',
+    \ 'scheme' : $HOME.'/.gosh_completions'
     \ }
 
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
@@ -419,6 +419,9 @@ omap s <Plug>(easymotion-tn)
 nmap f <Plug>(easymotion-sl2)
 vmap f <Plug>(easymotion-sl2)
 omap f <Plug>(easymotion-sl2)
+nmap t <Plug>(easymotion-tl)
+vmap t <Plug>(easymotion-tl)
+omap t <Plug>(easymotion-tl)
 
 
 " Turn on case sensitive feature
@@ -475,6 +478,8 @@ highlight TagbarHighlight guifg=red guibg=green
 nmap <unique> <F11> <plug>NERDCommenterToggle
 vmap <unique> <F11> <plug>NERDCommenterToggle
 imap <unique> <F11> <plug>NERDCommenterToggle
+nnoremap <leader>cc <plug>NERDCommenterInvert
+vnoremap <leader>cc <plug>NERDCommenterInvert
 "}}} NERDCommenter settings
 "add semicolon(;) at the end of line without changing cursor position
 nnoremap <leader>; mqA;<esc>`q
@@ -496,4 +501,27 @@ nnoremap <leader>mr :CtrlPMRU<CR>
 :command -nargs=1 Gap :call GapFromMark(<f-args>)
 
 syn on
+
+"====[ Make the 81st column stand out ]====================
+" OR ELSE just the 81st column of wide lines...
+highlight ColorColumn ctermbg=magenta
+call matchadd('ColorColumn', '\%81v', 100)
+
+"====[ Swap v and CTRL-V, because Block mode is more useful that Visual mode "]======
+nnoremap    v   <C-V>
+nnoremap <C-V>     v
+
+vnoremap    v   <C-V>
+vnoremap <C-V>     v
+
+"vmath plugin
+vmap <expr>  ++  VMATH_YankAndAnalyse()
+nmap ++  vip++
+
+"visualdrag plugin
+vmap  <expr>  <LEFT>   DVB_Drag('left') 
+vmap  <expr>  <RIGHT>  DVB_Drag('right')
+vmap  <expr>  <DOWN>   DVB_Drag('down')
+vmap  <expr>  <UP>     DVB_Drag('up') 
+vmap  <expr>  D        DVB_Duplicate()
 "/* vim: set foldmethod=marker: */
