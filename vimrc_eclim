@@ -1,0 +1,43 @@
+" {{{ customization for eclim
+" -------------------------------
+"  customization for eclim
+" -------------------------------
+nnoremap <silent> <leader>lf :LocateFile<cr>
+nnoremap <silent> <cr> :call DoSearch()<cr>
+" nnoremap <silent> <S-cr> :CSearch -p <c-r>=expand("<cword>")<cr> -s all -x references<cr>
+let g:EclimLocateFileCaseInsensitive='always'
+let g:EclimCSearchSingleResult='edit'
+let g:EclimTodoSearchExtensions = ['java', 'py', 'xml', 'cpp', 'hpp']
+let g:EclimSearchSkipList = ['obj', 'dep', 'dbo', 'obmp', 'o', 'ti',
+                            \'manifest', 'resource', 'RMSfont', 'exe',
+                            \'transform', 'dll']
+
+" inoremap <unique> <F6> :CCallHierarchy<cr>
+" nnoremap <unique> <F6> :CCallHierarchy<cr>
+
+nnoremap <F1> :ProjectGrep /<c-r>=expand("<cword>")<cr>/ **/*.xml
+let g:EclimProjectKeepLocalHistory = 1
+
+nnoremap <leader>de <C-w><C-v><C-l>:e $HOME/myvim/bundle/eclim-1.7.4/doc/vim/cheatsheet.txt<cr>
+map <c-F2> :ProjectTreeToggle<cr>
+
+" search via Google
+command -range -nargs=* Gl call eclim#web#SearchEngine(
+  \ 'http://www.google.com/search?q=<query>', <q-args>, <line1>, <line2>)
+" }}}
+
+function! ShiftEnter()
+    if &filetype ==# 'cpp'
+        exec "CSearch -p ".expand("<cword>")." -s all -x references"
+    elseif &filetype ==# 'xml'
+        exec "vimgrep /".expand("<cword>")."/ **/*.xml"
+    elseif &buftype ==# 'quickfix'
+        set switchbuf+=split
+        echom 'in quickfix'
+        call feedkeys("\<CR>")
+        " todo: not working, reset this open buffer will not in split window
+        " set switchbuf-=split
+    endif
+endfunction
+
+nnoremap  <S-cr> :call ShiftEnter()<cr>

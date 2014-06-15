@@ -1,3 +1,98 @@
+snippet backtrack "backtrack template"
+
+bool IsASolution($1, $2, $3)
+{
+    return $2 == $3;
+}
+
+void ProcessSolution($1, $3, $4)
+{
+}
+
+void ConstructCandidates(${5:candidate vector}, int& numCandidates, $2, $3, $4)
+{
+    bool inPerm[300] = {false};
+    numCandidates = 0;
+
+    for (int i = 0; i < k - 1; ++i)
+    {
+        inPerm[a[i]] = true;
+    }
+
+    for (int i = 0; i < n; ++i)
+    {
+        if (!inPerm[data[i]])
+        {
+            candidates[numCandidates] = data[i];
+            ++numCandidates;
+        }
+    }
+}
+
+void backtrack(${1:solution vector}, ${2:current solution vector length}, ${3:whole states space length}, ${4:whole states space})
+{
+    int candidates[5];
+    int numCandidates = 0;
+
+    if (IsASolution($1, $2, $3))
+    {
+        ProcessSolution($1, $3, $4);
+    }
+    else
+    {
+        k++;
+        ConstructCandidates($5, int& numCandidates, $2, $3, $4);
+
+        for (int i = 0; i < numCandidates; ++i)
+        {
+            $1[$2-1] = candidates[i];
+            backtrack($1, $2, $3, $4);
+        }
+    }
+}
+endsnippet
+
+snippet uva "template for uva online judge"
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    string line;
+    int n = 0;
+
+    ifstream cin("10137_input.txt");
+    while(1)
+    {
+        getline(input, line);
+        stringstream ss;
+        ss << line;
+        ss >> n;
+
+        if (n == 0)
+        {
+            break;
+        }
+
+        for (int i = 0; i < n; ++i)
+        {
+            getline(cin, line);
+            ss.str("");
+            ss.clear();
+
+            ss << line;
+            ss >> amount;
+        }
+    }
+
+    return 0;
+}
+endsnippet
+
 snippet 2darray "2d array"
 ${1:int}** ${2:grid} = new $1*[${3:ROW}];
 for (int i = 0; i < $3; ++i)
@@ -177,7 +272,7 @@ snippet ifc "pure interface class"
 class ${1:`!p snip.rv = snip.basename or "name"`}
 {
 public:
-    virtual ~${1/(\w+).*/$1/} () {}; 
+    virtual ~${1/(\w+).*/$1/} () {};
 
     $0
 };

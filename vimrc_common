@@ -66,6 +66,9 @@ set nosmd " don't show mode, otherwise vmath won't work properly
 
 source $HOME/myvim/vimrc_dict
 
+nnoremap <leader>e :ChooseWin<cr>
+nnoremap <leader>fb =i{
+
 nnoremap dw "ddw
 nnoremap x "xx
 
@@ -182,27 +185,27 @@ function! ReplaceWithClipboard()
 endfunction
 "}}}
 
-command! -nargs=* -complete=file Ack :call AckFunc(<q-args>)
+"command! -nargs=* -complete=file Ack :call AckFunc(<q-args>)
 
 "search all the lines match the current word under cursor in the whole file and 
 "list them in tne quickfix window
-" nmap <leader>lv :lv /<c-r>=expand("<cword>")<cr>/ %<cr>:lw<cr>
+nnoremap <leader>lv :lv /<c-r>=expand("<cword>")<cr>/ %<cr>:lw<cr>
 nnoremap <C-F> :lv /<c-r>=expand("<cword>")<cr>/ %<cr>:lw<cr>
 
 "search word under cursor with Ack
-nmap <unique> <F3> :Ack <c-r>=expand("<cword>")<cr> --cpp
+"nmap <unique> <F3> :Ack <c-r>=expand("<cword>")<cr> --cpp
 
 "search with visual selection using Ack
-vmap <unique> <F3> <Esc>:Ack "<c-r>=GetVisual("true")<cr>" --cpp
+"vmap <unique> <F3> <Esc>:Ack "<c-r>=GetVisual("true")<cr>" --cpp
 
 "search with clipboard content using Ack
-nnoremap <A-F3> :Ack "<c-r>=expand(getreg("*"))<cr>" --cpp
+"nnoremap <A-F3> :Ack "<c-r>=expand(getreg("*"))<cr>" --cpp
 
 "replace word under cursor with clipboard content
-nnoremap <S-F3> :call  ReplaceWithClipboard()<cr>
+"nnoremap <S-F3> :call  ReplaceWithClipboard()<cr>
 
 "repeate last substitution for whole file
-nnoremap <C-F3> :0,$&<cr>
+"nnoremap <C-F3> :0,$&<cr>
 
 " Pull word under cursor into LHS of a substitute
 nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
@@ -211,7 +214,7 @@ nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
 vmap <leader>z <Esc>:%s#<c-r>=GetVisual("true")<cr>#
 "}}}
 " go to the directory of current editing file in NerdTree
-:command -nargs=0 Here :NERDTree %:p:h
+:command -nargs=0 Hr :NERDTree %:p:h
 :command -nargs=0 Cwd :execute 'NERDTree '.getcwd()
 
 nnoremap <leader>cn :cn<cr>
@@ -305,7 +308,7 @@ map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 "}}}
 
 "{{{ Unite.vim settings
-"let g:unite_split_rule = "botright"
+let g:unite_split_rule = "botright"
 "let g:unite_force_overwrite_statusline = 0
 "let g:unite_winheight = 10
 
@@ -327,16 +330,14 @@ call unite#custom#source(
 ""call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "call unite#filters#sorter_default#use(['sorter_rank'])
 
-let g:unite_source_rec_max_cache_files = 10000
-call unite#custom#source('file_rec,file_rec/async',
-    \ 'max_candidates', 50)
+"let g:unite_source_rec_max_cache_files = 10000
+"call unite#custom#source('file_rec,file_rec/async',
+    "\ 'max_candidates', 50)
 
 "nnoremap <leader>p :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
-"nnoremap <leader>p :Unite file_rec/async<cr>
+"nnoremap <leader>p :Unite file_rec/sync<cr>
 "nnoremap <silent> <Leader>mr :Unite -buffer-name=recent -winheight=10 file_mru<cr>
-nnoremap <Leader>o :Unite -buffer-name=buffers -winheight=10 buffer<cr>
-nnoremap <<F7>> :Unite -buffer-name=yank -winheight=10 history/yank<cr>
-autocmd FileType unite call s:unite_settings()
+let g:unite_source_history_yank_enable = 1
 
 let g:unite_source_grep_command = ag
 let g:unite_source_grep_default_opts =
@@ -346,24 +347,45 @@ let g:unite_source_grep_recursive_opt = ''
 
 nnoremap <leader>/ :Unite -auto-preview grep:.<cr>
 "For searching the word in the cursor in the current directory,
-noremap <silent> <Leader>s :Unite grep:.::<C-R><C-w><CR>
+noremap <silent> <Leader>s :Unite -auto-preview grep:.::\\b<C-R><C-w>\\b<CR>
 "For searching the word in the cursor in the current buffer,
-noremap <silent> <Leader>sf :Unite grep:%::<C-r><C-w><CR>
+noremap <silent> <Leader>sf :Unite -auto-preview grep:%::\\b<C-r><C-w>\\b<CR>
 "For searching the word in the cursor in all opened buffer
-noremap <silent> <Leader>sa :Unite grep:$buffers::<C-r><C-w><CR>
-" Press <leader>ll to re-open last Unite buffer
-nnoremap <silent><leader>ll :<C-u>UniteResume<CR>
+noremap <silent> <Leader>sb :Unite -auto-preview grep:$buffers::\\b<C-r><C-w>\\b<CR>
 
-function! s:unite_settings()
-  let b:SuperTabDisabled=1
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <silent><buffer><expr> <C-x> unite#do_action('split')
-  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+function! s:unite_my_settings()
+    "I want to toggle the preview window when I press the "p" key.
+    nnoremap <silent><buffer><expr> p
+    \ empty(filter(range(1, winnr('$')),
+    \ 'getwinvar(v:val, "&previewwindow") != 0')) ?
+    \ unite#do_action('preview') : ":\<C-u>pclose!\<CR>"
 
-  nmap <buffer> <ESC> <Plug>(unite_exit)
+    nnoremap <silent><buffer><expr> i unite#do_action('split')
+    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+    "imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+    inoremap <buffer> <C-k> <C-w>k
+    nnoremap <buffer> <C-k> <C-w>k
+    imap <silent><buffer><expr> <C-s> unite#do_action('split')
+    imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+    imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+    nnoremap <silent><buffer><expr> v unite#do_action('vsplit')
+    nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
+
+    nmap <buffer> <ESC> <Plug>(unite_exit)
+    nmap <buffer> q <Plug>(unite_exit)
 endfunction
+autocmd FileType unite call s:unite_my_settings()
+
+nnoremap <Leader>o :Unite -buffer-name=buffers -start-insert -winheight=10 tab buffer<cr>
+nnoremap <F7> :Unite -buffer-name=yank -winheight=10 -start-insert history/yank<cr>
+nnoremap <leader>um :Unite bookmark <cr>
+nnoremap <leader>ug :Unite register <cr>
+nnoremap <leader>up :Unite mapping <cr>
+nnoremap <leader>ur :Unite resume <cr>
+nnoremap <leader>uf :Unite -start-insert file <cr>
+nnoremap <leader>uh ::UniteWithBufferDir -start-insert file<cr>
+" re-open last Unite buffer
+nnoremap <silent><leader>ul :<C-u>UniteResume<CR>
 "}}}
 
 "{{{ Neocomplete settings
@@ -384,8 +406,8 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'scheme' : $HOME.'/.gosh_completions'
     \ }
 
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 "}}}
 "
 "scientific calculator
@@ -522,4 +544,22 @@ vmap  <expr>  <RIGHT>  DVB_Drag('right')
 vmap  <expr>  <DOWN>   DVB_Drag('down')
 vmap  <expr>  <UP>     DVB_Drag('up') 
 vmap  <expr>  D        DVB_Duplicate()
+
+"{{{ YCM customization
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_server_log_level = 'debug'
+let g:ycm_complete_in_comments=1
+let g:ycm_confirm_extra_conf=0
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_key_list_select_completion = ['<Enter>', '<Down>']
+let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
+"force to use python27 32 bit version
+"let g:ycm_path_to_python_interpreter = ''
+
+nnoremap <silent> <cr> :YcmCompleter GoToDefinitionElseDeclaration <cr>
+if has('autocmd')
+  autocmd FileType cpp,vim,python NeoCompleteLock
+ endif
+"}}}
 "/* vim: set foldmethod=marker: */

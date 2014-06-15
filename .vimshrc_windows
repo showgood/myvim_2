@@ -1,0 +1,11 @@
+let $PATH="~/wxm:~/wxm/soft".$PATH
+
+alias ack='ack.pl'
+alias gui="cd $OPTIMA_GUI"
+alias mb="cd $OPTIMA_MB"
+alias mbt="cd $OPTIMA_MB/Mainboard/Test/UnitTest/CPPUnit_VisualStudio/dbg"
+alias honesty="cd $OPTIMA_MB/Mainboard/Test/Honesty"
+alias dl="cd $OPTIMA_MB/Mainboard/Test/Honesty/build/DataLogger"
+alias optime='python ~/mytools/ots_util.py -d "$$args"'
+alias to_ots='python ~/mytools/ots_util.py -e "$$args"'
+alias log='c:/tools/node.exe c:/tools/udpclient_v1.js "$$args""'

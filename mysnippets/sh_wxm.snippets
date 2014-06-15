@@ -1,3 +1,19 @@
+snippet erv "put visual selection to echo in red"
+echo -e "\e[31m ${VISUAL} \e[0m"
+endsnippet
+
+snippet egv "put visual selection to echo in Green"
+echo -e "\e[32m ${VISUAL} \e[0m"
+endsnippet
+
+snippet er "echo in red"
+echo -e "\e[31m ${1:message} \e[0m"
+endsnippet
+
+snippet eg "echo in Green"
+echo -e "\e[32m ${1:message} \e[0m"
+endsnippet
+
 snippet case "case .. esac (case)"
 case ${1:word} in
     ${2:pattern} )

@@ -9,3 +9,5 @@ iabbr ctor constructor
 iabbr dtor destructor
 iabbr exp Expiratory
 iabbr insp Inspiratory
+iabbr udsd understand
+iabbr stf straightforward
