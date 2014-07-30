@@ -31,7 +31,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
-NeoBundle 'altercation/vim-colors-solarized'
+NeoBundleDisable 'altercation/vim-colors-solarized'
 NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
 NeoBundleDisable 'scrooloose/nerdtree'
@@ -52,7 +52,7 @@ NeoBundle 'Shougo/vimshell'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
 NeoBundle 'xolox/vim-shell'
-NeoBundle 't9md/vim-choosewin'
+NeoBundleDisable 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundleDisable 'bling/vim-airline'  "not very useful to me
 NeoBundle 'terryma/vim-expand-region'
@@ -60,7 +60,7 @@ NeoBundle 'mbbill/undotree'
 NeoBundleDisable 'chrisbra/csv.vim'
 NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'dkprice/vim-easygrep'
+NeoBundleDisable 'dkprice/vim-easygrep'
 NeoBundle 'vimwiki'
 NeoBundleDisable 'tommcdo/vim-exchange'
 NeoBundle 'godlygeek/tabular'
@@ -69,7 +69,7 @@ NeoBundle 'showgood/YCM_windows'
 NeoBundle 'vim-scripts/stlrefvim'
 NeoBundle 'johnsyweb/vim-makeshift'
 NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'mbbill/VimExplorer'
+NeoBundleDisable 'mbbill/VimExplorer'
 NeoBundle 'vim-scripts/LineJuggler'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
@@ -110,17 +110,8 @@ set guioptions-=T
 set gfn=Monaco:h10
 
 " make vim window maximized when startup
-autocmd GUIEnter * simalt ~x
+"autocmd GUIEnter * simalt ~x
 "}}}
-" When vimrc is edited, reload it
-"not working...
-"autocmd! bufwritepost vimrc source $MYVIMRC<cr>
-
-"disabled because conflict with mark.vim plugin
-" nnoremap *   *zz
-" nnoremap #   #zz
-"nnoremap g*  g*zz
-"nnoremap g#  g#z
 
 " {{{ SVN related mappings
 :command -nargs=0 Log :call ExecuteCommand("TortoiseProc.exe /command:log /path:", "%")
@@ -164,26 +155,7 @@ endfunction
 "******* END: interaction with explorere, shell ******************
 "}}}
 
-" :set switchbuf+=split
-
-:command -nargs=* Seq call GenSeq(<f-args>)
-
-function! TurnOnSplitBuf()
-    set switchbuf+=split
-endfunction
-
-":command -nargs=0 FarMenu :tabedit C:\Documents and Settings\xiaomingw\Application Data\Far Manager\Profile\FarMenu.ini
-
-function! DoFilter(pattern)
-let @a=""
-exec 'v/'.a:pattern.'/y A'
-let @*=@a
-endfunction
-
-:command -nargs=* Filter :call DoFilter(<f-args>)
-
 let g:shell_mappings_enabled=0
-
 
 source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
@@ -191,59 +163,14 @@ filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
 :command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
-nnoremap <leader>sf :call StartFolding()<CR>
-"map <silent> <unique> <Leader>ll <Plug>CRV_CRefVimInvoke
-
-"0 or s: Find this C symbol
-"1 or g: Find this definition
-"2 or d: Find functions called by this function
-"3 or c: Find functions calling this function
-"4 or t: Find this text string
-"6 or e: Find this egrep pattern
-"7 or f: Find this file
-"8 or i: Find files #including this file
-nmap <leader>ss :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>sg :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>sc :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>st :cs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>se :cs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>sf :cs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <leader>si :cs find i ^<C-R>=expand("%:t")<CR>$<CR>
-nmap <leader>sd :cs find d <C-R>=expand("<cword>")<CR><CR>
-set cscopequickfix=s-,c-,d-,i-,t-,e-,g-,f-
-
-function! CscopeT(pattern)
-    let cmd = "cs find t ".a:pattern
-    exec cmd
-endfunction
-
-:command -nargs=* St :call CscopeT(<f-args>)
-
 vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
-
-:command -nargs=0 Dropbox :cd c:/wxm/Dropbox/Write/
 :command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
 
 let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
 
-nnoremap <F8> :!/usr/bin/find $OPTIMA_MB -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hpp' > cscope.files<CR>
-  \:!cscope -b -i cscope.files -f cscope.out<CR>
-  \:cs reset<CR>
-
 let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
 let g:notes_suffix = '.note'
 let g:notes_title_sync = 'no'
-command! -nargs=* FW call FilterToNewWindow(<args>)
-
-function! FilterToNewWindow(script)
-    let TempFile = tempname()
-    let SaveModified = &modified
-    exe 'w ' . TempFile
-    let &modified = SaveModified
-    exe 'split ' . TempFile
-    echom a:script
-    exe '%! ' . a:script
-endfunction
 
 " OR ELSE just highlight the match in red...
 function! HLNext (blinktime)
@@ -257,10 +184,6 @@ function! HLNext (blinktime)
     call matchdelete(ring)
     redraw
 endfunction
-
-" This rewires n and N to do the highlighing...
-nnoremap <silent> n   n:call HLNext(0.4)<cr>
-nnoremap <silent> N   N:call HLNext(0.4)<cr>
 
 "free mapping so far
 ",a
@@ -289,13 +212,11 @@ autocmd BufReadPre SConscript set filetype=python
 
 function Mail(file)
     let cmd= '!start '.g:mail." /c ipm.note /a ".a:file
-    "let cmd= '!start powershell -Attachments '.a:file
     execute cmd
 endfunction
 
 function Ml()
     let cmd= '!start '.g:mail." /c ipm.note /a ". expand("%:p")
-    "let cmd= '!start powershell send-mailmessage -Attachments '.expand("%:p")
     execute cmd
 endfunction
 
@@ -307,17 +228,12 @@ endfunction
 
 :command -nargs=0 Ml :call Ml()
 :command -nargs=1 Mail :call Mail(<q-args>)
-:command -nargs=0 Tr :!cp %:p c:/workarea/TransformCppUnitToGTest/manual_ui
 
 let MailAction = {
 \ 'is_selectable' : 1,
 \ }
 function! MailAction.func(candidates)
   "candidates is a list of dictionary
-  echom string(a:candidates)
-
-  "let dir = isdirectory(a:candidate.word) ?
-  "\    a:candidate.word : fnamemodify(a:candidate.word, ':p:h')
   call Mail(a:candidates[0].action__path)
 endfunction
 call unite#custom#action('file', 'mail', MailAction)
@@ -341,21 +257,7 @@ call unite#custom#action('file', 'zip', ZipAction)
 unlet ZipAction
 let g:unite_enable_start_insert = 1
 
-
 " {{{ folding
-" autocmd Syntax c,cpp,vim,xml,html,xhtml setlocal foldmethod=syntax
-" autocmd Syntax c,cpp,vim,xml,html,xhtml,perl normal zR
-
-" set foldlevelstart=0
-" set foldmethod=syntax
-" set foldnestmax=2
-
-" Space to toggle folds.
-" nnoremap <space> za
-" vnoremap <space> za
-
-" Make zO recursively open whatever top level fold we're in, no matter where the
-" cursor happens to be.
 nnoremap zO zCzO
 
 " Use ,z to "focus" the current fold.
