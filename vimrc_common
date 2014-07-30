@@ -32,7 +32,6 @@ set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set list
 set noswapfile
 
-
 "watch out.. no backup will be saved
 set nobackup
 set autoread
@@ -64,11 +63,10 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,latin1
 set nosmd " don't show mode, otherwise vmath won't work properly
 "}}}
 
-source $HOME/myvim/vimrc_dict
+"source $HOME/myvim/vimrc_dict
 
 nnoremap <leader>e :ChooseWin<cr>
 nnoremap <leader>fb =i{
-
 nnoremap dw "ddw
 nnoremap x "xx
 
@@ -87,11 +85,6 @@ inoremap <c-p>  <ESC>Pa
 nnoremap <leader>dt biDISABLED_<ESC>
 nnoremap <leader>caf vaf,cc
 inoremap <c-l> <ESC>la
-" imap <Leader>ymd   <C-R>=strftime("%y%m%d")<CR>
-" imap <Leader>mdy   <C-R>=strftime("%m/%d/%y")<CR>
-" imap <Leader>ndy   <C-R>=strftime("%b %d, %Y")<CR>
-" imap <Leader>hms   <C-R>=strftime("%T")<CR>
-" imap <Leader>ynd   <C-R>=strftime("%Y %b %d")<CR>
 imap nnow   <C-R>=strftime("%c")<CR>
 imap ddate <C-R>=strftime("%d/%m/%Y")<CR>
 "}}}
@@ -189,8 +182,6 @@ function! ReplaceWithClipboard()
 endfunction
 "}}}
 
-"command! -nargs=* -complete=file Ack :call AckFunc(<q-args>)
-
 "search all the lines match the current word under cursor in the whole file and 
 "list them in tne quickfix window
 nnoremap <leader>lv :lv /<c-r>=expand("<cword>")<cr>/ %<cr>:lw<cr>
@@ -217,9 +208,6 @@ nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
 " Pull visual selection into LHS of a substitute
 vmap <leader>z <Esc>:%s#<c-r>=GetVisual("true")<cr>#
 "}}}
-" go to the directory of current editing file in NerdTree
-":command -nargs=0 Hr :NERDTree %:p:h
-":command -nargs=0 Cwd :execute 'NERDTree '.getcwd()
 
 nnoremap <leader>cn :cn<cr>
 nnoremap <leader>cp :cp<cr>
@@ -259,7 +247,6 @@ nmap <leader>fl :let @*=expand("%:p")<CR>
 "clear the highlight for previous search
 nnoremap <leader><space> :noh<cr>
 
-"map <F2> :NERDTreeToggle<cr>
 nnoremap <F12> :TagbarToggle<CR>
 
 "trim all trailing whitespace in the current file
