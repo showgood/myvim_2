@@ -83,6 +83,10 @@ inoremap <unique> kk <C-O>
 vmap Q gq
 nmap Q gqap
 
+inoremap <c-p>  <ESC>Pa
+nnoremap <leader>dt biDISABLED_<ESC>
+nnoremap <leader>caf vaf,cc
+inoremap <c-l> <ESC>la
 " imap <Leader>ymd   <C-R>=strftime("%y%m%d")<CR>
 " imap <Leader>mdy   <C-R>=strftime("%m/%d/%y")<CR>
 " imap <Leader>ndy   <C-R>=strftime("%b %d, %Y")<CR>
@@ -214,8 +218,8 @@ nmap <leader>z :%s#\<<c-r>=expand("<cword>")<cr>\>#
 vmap <leader>z <Esc>:%s#<c-r>=GetVisual("true")<cr>#
 "}}}
 " go to the directory of current editing file in NerdTree
-:command -nargs=0 Hr :NERDTree %:p:h
-:command -nargs=0 Cwd :execute 'NERDTree '.getcwd()
+":command -nargs=0 Hr :NERDTree %:p:h
+":command -nargs=0 Cwd :execute 'NERDTree '.getcwd()
 
 nnoremap <leader>cn :cn<cr>
 nnoremap <leader>cp :cp<cr>
@@ -243,22 +247,19 @@ nmap <Leader>bp o"<esc>
 
 nnoremap Y y$
 
-if has('win32')
-  "copy just filename for the file under edit to clipboard
-  nmap <leader>fs :let @*=substitute(expand("%:t"), "/", "\\", "g")<CR>
+"copy just filename for the file under edit to clipboard
+nmap <leader>fsw :let @*=substitute(expand("%:t"), "/", "\\", "g")<CR>
 
-  "copy filename with path for the file under edit to clipboard
-  nmap <leader>fl :let @*=substitute(expand("%"), "/", "\\", "g")<CR>
-else
-  nmap <leader>fs :let @*=expand("%:t")<CR>
-  nmap <leader>fl :let @*=expand("%")<CR>
-endif
+"copy filename with path for the file under edit to clipboard
+nmap <leader>flw :let @*=substitute(expand("%:p"), "/", "\\", "g")<CR>
+nmap <leader>fs :let @*=expand("%:t")<CR>
+nmap <leader>fl :let @*=expand("%:p")<CR>
 "}}}
 
 "clear the highlight for previous search
 nnoremap <leader><space> :noh<cr>
 
-map <F2> :NERDTreeToggle<cr>
+"map <F2> :NERDTreeToggle<cr>
 nnoremap <F12> :TagbarToggle<CR>
 
 "trim all trailing whitespace in the current file
@@ -305,87 +306,6 @@ nnoremap <F9> :call ToggleQuickFixWindow()<CR>
 "press leader + co in quickfix window it will isolate the
 "quickfix in a new tab and syntax highlight it
 map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-"}}}
-
-"{{{ Unite.vim settings
-let g:unite_split_rule = "botright"
-"let g:unite_force_overwrite_statusline = 0
-"let g:unite_winheight = 10
-
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
-      \ 'ignore_pattern', join([
-      \ '\.git/', '\.svn/', '\.obj$', 'bin/', 'obj/',
-      \ '\.so$', '\.exe$', '\.a$', '\.dep$',
-      \ '\.dla$', '\.dba$', '\.o$', '\.dbo$',
-      \ '\.d$', '\.ti$', '\.map$', '\.obmp$',
-      \ '\.ico$', '\.RMSfont$', '\.bin$'
-      \ ], '\|'))
-
-call unite#custom#source(
-    \ 'buffer,file_rec/async,file_rec', 'matchers',
-    \ ['converter_tail', 'matcher_default'])
-call unite#custom#source(
-    \ 'file_rec/async,file_rec', 'converters',
-    \ ['converter_file_directory'])
-""call unite#filters#matcher_default#use(['matcher_fuzzy'])
-"call unite#filters#sorter_default#use(['sorter_rank'])
-
-"let g:unite_source_rec_max_cache_files = 10000
-"call unite#custom#source('file_rec,file_rec/async',
-    "\ 'max_candidates', 50)
-
-"nnoremap <leader>p :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
-"nnoremap <leader>p :Unite file_rec/sync<cr>
-"nnoremap <silent> <Leader>mr :Unite -buffer-name=recent -winheight=10 file_mru<cr>
-let g:unite_source_history_yank_enable = 1
-
-let g:unite_source_grep_command = ag
-let g:unite_source_grep_default_opts =
-\ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
-\  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-let g:unite_source_grep_recursive_opt = ''
-
-nnoremap <leader>/ :Unite -auto-preview grep:.<cr>
-"For searching the word in the cursor in the current directory,
-noremap <silent> <Leader>s :Unite -auto-preview grep:.::\\b<C-R><C-w>\\b<CR>
-"For searching the word in the cursor in the current buffer,
-noremap <silent> <Leader>sf :Unite -auto-preview grep:%::\\b<C-r><C-w>\\b<CR>
-"For searching the word in the cursor in all opened buffer
-noremap <silent> <Leader>sb :Unite -auto-preview grep:$buffers::\\b<C-r><C-w>\\b<CR>
-
-function! s:unite_my_settings()
-    "I want to toggle the preview window when I press the "p" key.
-    nnoremap <silent><buffer><expr> p
-    \ empty(filter(range(1, winnr('$')),
-    \ 'getwinvar(v:val, "&previewwindow") != 0')) ?
-    \ unite#do_action('preview') : ":\<C-u>pclose!\<CR>"
-
-    nnoremap <silent><buffer><expr> i unite#do_action('split')
-    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-    "imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-    inoremap <buffer> <C-k> <C-w>k
-    nnoremap <buffer> <C-k> <C-w>k
-    imap <silent><buffer><expr> <C-s> unite#do_action('split')
-    imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-    imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-    nnoremap <silent><buffer><expr> v unite#do_action('vsplit')
-    nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
-
-    nmap <buffer> <ESC> <Plug>(unite_exit)
-    nmap <buffer> q <Plug>(unite_exit)
-endfunction
-autocmd FileType unite call s:unite_my_settings()
-
-nnoremap <Leader>o :Unite -buffer-name=buffers -start-insert -winheight=10 tab buffer<cr>
-nnoremap <F7> :Unite -buffer-name=yank -winheight=10 -start-insert history/yank<cr>
-nnoremap <leader>um :Unite bookmark <cr>
-nnoremap <leader>ug :Unite register <cr>
-nnoremap <leader>up :Unite mapping <cr>
-nnoremap <leader>ur :Unite resume <cr>
-nnoremap <leader>uf :Unite -start-insert file <cr>
-nnoremap <leader>uh ::UniteWithBufferDir -start-insert file<cr>
-" re-open last Unite buffer
-nnoremap <silent><leader>ul :<C-u>UniteResume<CR>
 "}}}
 
 "{{{ Neocomplete settings
@@ -435,7 +355,7 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
 " use <leader>s since s is taken by seek plugin
-map  s <Plug>(easymotion-s2)
+nmap  s <Plug>(easymotion-s2)
 vmap s <Plug>(easymotion-s2)
 omap s <Plug>(easymotion-tn)
 nmap f <Plug>(easymotion-sl2)
@@ -555,11 +475,112 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_list_select_completion = ['<Enter>', '<Down>']
 let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
 "force to use python27 32 bit version
-"let g:ycm_path_to_python_interpreter = ''
+let g:ycm_path_to_python_interpreter = 'c:/Python27/pythonw.exe'
 
 nnoremap <silent> <cr> :YcmCompleter GoToDefinitionElseDeclaration <cr>
 if has('autocmd')
-  autocmd FileType cpp,vim,python NeoCompleteLock
+  autocmd FileType cpp,vim,python nested NeoCompleteLock
  endif
+"}}}
+
+"{{{Replace with register customization
+"nmap <Leader>r  <Plug>ReplaceWithRegisterOperator
+"nmap <Leader>rr <Plug>ReplaceWithRegisterLine
+"xmap <Leader>r  <Plug>ReplaceWithRegisterVisual
+"}}}
+"
+"{{{ fugitive custimzation
+
+
+"{{{ Unite.vim settings  keep it last
+let g:unite_split_rule = "botright"
+"let g:unite_force_overwrite_statusline = 0
+"let g:unite_winheight = 10
+nnoremap    [unite]   <Nop>
+nmap    z [unite]
+
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.svn/', '\.git/','\.obj$', 'bin/', 'obj/',
+      \ '\.so$', '\.exe$', '\.a$', '\.dep$',
+      \ '\.dla$', '\.dba$', '\.o$', '\.dbo$',
+      \ '\.d$', '\.ti$', '\.map$', '\.obmp$',
+      \ '\.ico$', '\.RMSfont$', '\.bin$', '\.idb$',
+      \ '\.pdb$', '\.res$', '\.dll$', '\.dblite$',
+      \ '\.exp$', '\.lib$', 'headers/', '\.ilk$',
+      \ '\.pyc$', '\.pyd$', '\.manifest$',
+      \ ], '\|'))
+
+call unite#custom#source(
+    \ 'buffer,file_rec/async,file_rec', 'matchers',
+    \ ['converter_tail', 'matcher_default'])
+call unite#custom#source(
+    \ 'file_rec/async,file_rec', 'converters',
+    \ ['converter_file_directory'])
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"call unite#filters#sorter_default#use(['sorter_rank'])
+
+"let g:unite_source_rec_max_cache_files = 10000
+"call unite#custom#source('file_rec,file_rec/async',
+    "\ 'max_candidates', 50)
+
+"nnoremap <leader>p :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
+"nnoremap <leader>p :Unite file_rec/sync<cr>
+"nnoremap <silent> <Leader>mr :Unite -buffer-name=recent -winheight=10 file_mru<cr>
+"nnoremap <leader>uu :<C-u>Unite  -buffer-name=files -resume -start-insert buffer file_rec/async:!<cr>
+"nnoremap [unite]u :<C-u>Unite  -buffer-name=files -resume -start-insert buffer file_rec/async:!<cr>
+let g:unite_source_history_yank_enable = 1
+
+let g:unite_source_grep_command = ag
+let g:unite_source_grep_default_opts =
+\ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+\  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+let g:unite_source_grep_recursive_opt = ''
+
+nnoremap <leader>/ :Unite grep:.<cr>
+"For searching the word in the cursor in the current directory,
+noremap <silent> <Leader>s :Unite grep:.::\\b<C-R><C-w>\\b<CR>
+"For searching the word in the cursor in the current buffer,
+noremap <silent> <Leader>sf :Unite grep:%::\\b<C-r><C-w>\\b<CR>
+"For searching the word in the cursor in all opened buffer
+noremap <silent> <Leader>sb :Unite grep:$buffers::\\b<C-r><C-w>\\b<CR>
+
+function! s:unite_my_settings()
+    "I want to toggle the preview window when I press the "p" key.
+    nnoremap <silent><buffer><expr> p
+    \ empty(filter(range(1, winnr('$')),
+    \ 'getwinvar(v:val, "&previewwindow") != 0')) ?
+    \ unite#do_action('preview') : ":\<C-u>pclose!\<CR>"
+
+    nnoremap <silent><buffer><expr> s unite#do_action('split')
+    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+    imap <buffer> <C-a>   <Plug>(unite_toggle_mark_all_candidates)
+    "imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+    inoremap <buffer> <C-k> <C-w>k
+    nnoremap <buffer> <C-k> <C-w>k
+    inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+    inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+    inoremap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+    nnoremap <silent><buffer><expr> v unite#do_action('vsplit')
+    nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
+
+    nmap <buffer> q <Plug>(unite_exit)
+    imap <buffer> <C-q> <Plug>(unite_exit)
+endfunction
+autocmd FileType unite call s:unite_my_settings()
+
+nnoremap [unite]o :Unite -buffer-name=buffers -start-insert -winheight=10 tab buffer<cr>
+nnoremap <F7> :Unite -buffer-name=yank -winheight=10 -start-insert history/yank<cr>
+nnoremap [unite]m :Unite bookmark <cr>
+nnoremap [unite]g :Unite register <cr>
+nnoremap [unite]p :Unite mapping <cr>
+nnoremap [unite]r :Unite resume <cr>
+nnoremap [unite]f :Unite -start-insert file <cr>
+nnoremap [unite]h :<C-u>UniteWithBufferDir -start-insert file<cr>
+nnoremap [unite]c :<C-u>UniteWithCurrentDir -start-insert file<cr>
+nnoremap [unite]mb :Unite bookmark:mb <cr>
+nnoremap [unite]mu :Unite bookmark:ui <cr>
+" re-open last Unite buffer
+nnoremap <silent>[unite]u :<C-u>UniteResume<CR>
 "}}}
 "/* vim: set foldmethod=marker: */

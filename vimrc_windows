@@ -3,6 +3,7 @@ let $TMP="c:/tmp"
 let $TEMP="c:/tmp"
 set directory=.,$TMP,$TEMP
 let ag=$HOME.'/soft/ag.exe'
+let g:mail="c:/Program Files (x86)/Microsoft Office/Office14/OUTLOOK.exe"
 
 set shellquote=
 set shellxquote=
@@ -33,7 +34,7 @@ NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
-NeoBundle 'scrooloose/nerdtree'
+NeoBundleDisable 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'kana/vim-textobj-user'
@@ -61,10 +62,17 @@ NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'dkprice/vim-easygrep'
 NeoBundle 'vimwiki'
-NeoBundle 'tommcdo/vim-exchange'
+NeoBundleDisable 'tommcdo/vim-exchange'
 NeoBundle 'godlygeek/tabular'
 NeoBundleDisable 'dhruvasagar/vim-table-mode'
 NeoBundle 'showgood/YCM_windows'
+NeoBundle 'vim-scripts/stlrefvim'
+NeoBundle 'johnsyweb/vim-makeshift'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'mbbill/VimExplorer'
+NeoBundle 'vim-scripts/LineJuggler'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-ref'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
@@ -84,13 +92,7 @@ NeoBundle 'showgood/YCM_windows'
 NeoBundleCheck
 "}}}
 
-source $HOME/myvim/vimrc_common
-source $HOME/myvim/functions.vim
-filetype off
-
 autocmd!
-
-"source $HOME/myvim/RMD.vim
 
 :command -nargs=0 GUI :cd $OPTIMA_GUI
 :command -nargs=0 MB :cd $OPTIMA_MB
@@ -183,25 +185,9 @@ endfunction
 let g:shell_mappings_enabled=0
 
 
-" {{{ folding
-" autocmd Syntax c,cpp,vim,xml,html,xhtml setlocal foldmethod=syntax
-" autocmd Syntax c,cpp,vim,xml,html,xhtml,perl normal zR
-
-" set foldlevelstart=0
-" set foldmethod=syntax
-" set foldnestmax=2
-
-" Space to toggle folds.
-" nnoremap <space> za
-" vnoremap <space> za
-
-" Make zO recursively open whatever top level fold we're in, no matter where the
-" cursor happens to be.
-nnoremap zO zCzO
-
-" Use ,z to "focus" the current fold.
-nnoremap <leader>Z zMzvzz
-" }}}
+source $HOME/myvim/vimrc_common
+source $HOME/myvim/functions.vim
+filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
 :command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
@@ -298,4 +284,81 @@ let g:EasyGrepCommand = 1
 "open vimrc file in vertical window
 nnoremap <leader>ev <C-w><C-v><C-l>:e $HOME/myvim/vimrc_windows<cr>
 
+autocmd BufReadPre SConstruct set filetype=python
+autocmd BufReadPre SConscript set filetype=python
+
+function Mail(file)
+    let cmd= '!start '.g:mail." /c ipm.note /a ".a:file
+    "let cmd= '!start powershell -Attachments '.a:file
+    execute cmd
+endfunction
+
+function Ml()
+    let cmd= '!start '.g:mail." /c ipm.note /a ". expand("%:p")
+    "let cmd= '!start powershell send-mailmessage -Attachments '.expand("%:p")
+    execute cmd
+endfunction
+
+function Zip(zipFile, files)
+    let destFile=a:zipFile.".zip"
+    let cmd="!zip ".destFile." ".a:files
+    execute cmd
+endfunction
+
+:command -nargs=0 Ml :call Ml()
+:command -nargs=1 Mail :call Mail(<q-args>)
+:command -nargs=0 Tr :!cp %:p c:/workarea/TransformCppUnitToGTest/manual_ui
+
+let MailAction = {
+\ 'is_selectable' : 1,
+\ }
+function! MailAction.func(candidates)
+  "candidates is a list of dictionary
+  echom string(a:candidates)
+
+  "let dir = isdirectory(a:candidate.word) ?
+  "\    a:candidate.word : fnamemodify(a:candidate.word, ':p:h')
+  call Mail(a:candidates[0].action__path)
+endfunction
+call unite#custom#action('file', 'mail', MailAction)
+unlet MailAction
+
+let ZipAction = {
+\ 'is_selectable' : 1,
+\ }
+function! ZipAction.func(candidates)
+  "todo: handle the directory case
+  let zipFile = input('zip file name:')
+  let files=[]
+  for candidate in a:candidates
+      call add(files, candidate.action__path)
+  endfor
+  let filesList = join(files)
+  call Zip(zipFile, filesList)
+endfunction
+
+call unite#custom#action('file', 'zip', ZipAction)
+unlet ZipAction
+let g:unite_enable_start_insert = 1
+
+
+" {{{ folding
+" autocmd Syntax c,cpp,vim,xml,html,xhtml setlocal foldmethod=syntax
+" autocmd Syntax c,cpp,vim,xml,html,xhtml,perl normal zR
+
+" set foldlevelstart=0
+" set foldmethod=syntax
+" set foldnestmax=2
+
+" Space to toggle folds.
+" nnoremap <space> za
+" vnoremap <space> za
+
+" Make zO recursively open whatever top level fold we're in, no matter where the
+" cursor happens to be.
+nnoremap zO zCzO
+
+" Use ,z to "focus" the current fold.
+nnoremap <leader>Z zMzvzz
+" }}}
 "/* vim: set foldmethod=marker: */
