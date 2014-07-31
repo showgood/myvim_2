@@ -84,7 +84,9 @@ nmap Q gqap
 inoremap <c-p>  <ESC>Pa
 nnoremap <leader>dt biDISABLED_<ESC>
 nnoremap <leader>caf vaf,cc
-inoremap <c-l> <ESC>la
+"inoremap <c-l> <ESC>la
+"inoremap <c-l> gt
+"nnoremap <c-h> gT
 imap nnow   <C-R>=strftime("%c")<CR>
 imap ddate <C-R>=strftime("%d/%m/%Y")<CR>
 "}}}
@@ -480,9 +482,30 @@ if has('autocmd')
 
 
 "{{{ Unite.vim settings  keep it last
+function Zip(zipFile, files)
+    let destFile=a:zipFile.".zip"
+    let cmd="!zip ".destFile." ".a:files
+    execute cmd
+endfunction
+let ZipAction = {
+\ 'is_selectable' : 1,
+\ }
+function! ZipAction.func(candidates)
+  "todo: handle the directory case
+  let zipFile = input('zip file name:')
+  let files=[]
+  for candidate in a:candidates
+      call add(files, candidate.action__path)
+  endfor
+  let filesList = join(files)
+  call Zip(zipFile, filesList)
+endfunction
+
+call unite#custom#action('file', 'zip', ZipAction)
+unlet ZipAction
+
+let g:unite_enable_start_insert = 1
 let g:unite_split_rule = "botright"
-"let g:unite_force_overwrite_statusline = 0
-"let g:unite_winheight = 10
 nnoremap    [unite]   <Nop>
 nmap    z [unite]
 
@@ -507,17 +530,7 @@ call unite#custom#source(
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "call unite#filters#sorter_default#use(['sorter_rank'])
 
-"let g:unite_source_rec_max_cache_files = 10000
-"call unite#custom#source('file_rec,file_rec/async',
-    "\ 'max_candidates', 50)
-
-"nnoremap <leader>p :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
-"nnoremap <leader>p :Unite file_rec/sync<cr>
-"nnoremap <silent> <Leader>mr :Unite -buffer-name=recent -winheight=10 file_mru<cr>
-"nnoremap <leader>uu :<C-u>Unite  -buffer-name=files -resume -start-insert buffer file_rec/async:!<cr>
-"nnoremap [unite]u :<C-u>Unite  -buffer-name=files -resume -start-insert buffer file_rec/async:!<cr>
 let g:unite_source_history_yank_enable = 1
-
 let g:unite_source_grep_command = ag
 let g:unite_source_grep_default_opts =
 \ '--line-numbers --nocolor --nogroup --hidden --ignore ' .

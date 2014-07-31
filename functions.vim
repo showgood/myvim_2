@@ -66,6 +66,11 @@
 " depends on vim-shell plugin
 " Author: showgood
 "------------------------------------------------------------------------
+function! ExecCmd(command)
+    let cmd = a:command
+    call xolox#misc#os#exec({'command':cmd, 'async': 1})
+endfunction
+
 function! ExecuteCommand(command, arg)
     let cmd = a:command
     if a:arg == "%"

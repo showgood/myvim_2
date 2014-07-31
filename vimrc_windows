@@ -5,14 +5,8 @@ set directory=.,$TMP,$TEMP
 let ag=$HOME.'/soft/ag.exe'
 let g:mail="c:/Program Files (x86)/Microsoft Office/Office14/OUTLOOK.exe"
 
-set shellquote=
-set shellxquote=
-set shellpipe=2>&1\|tee
-set shellredir=>%s\ 2>&1
-set shellslash
 let g:explorer=$HOME.'/soft/multicommander/MultiCommander.exe'
 let g:console=$HOME.'/soft/cm_der/vendor/conemu-maximus5/ConEmu64.exe'
-let g:use_cygwin=1
 
 "{{{ NeoBundle
 if has('vim_starting')
@@ -73,6 +67,7 @@ NeoBundleDisable 'mbbill/VimExplorer'
 NeoBundle 'vim-scripts/LineJuggler'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
+NeoBundle 'severin-lemaignan/vim-minimap'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
@@ -200,10 +195,7 @@ endfunction
 ",x
 ",y
 syn on
-"fb -- format block
-command -nargs=1 Cp :!cp %:p <args>
 
-let g:EasyGrepCommand = 1
 "open vimrc file in vertical window
 nnoremap <leader>ev <C-w><C-v><C-l>:e $HOME/myvim/vimrc_windows<cr>
 
@@ -220,12 +212,6 @@ function Ml()
     execute cmd
 endfunction
 
-function Zip(zipFile, files)
-    let destFile=a:zipFile.".zip"
-    let cmd="!zip ".destFile." ".a:files
-    execute cmd
-endfunction
-
 :command -nargs=0 Ml :call Ml()
 :command -nargs=1 Mail :call Mail(<q-args>)
 
@@ -239,24 +225,35 @@ endfunction
 call unite#custom#action('file', 'mail', MailAction)
 unlet MailAction
 
-let ZipAction = {
-\ 'is_selectable' : 1,
-\ }
-function! ZipAction.func(candidates)
-  "todo: handle the directory case
-  let zipFile = input('zip file name:')
-  let files=[]
-  for candidate in a:candidates
-      call add(files, candidate.action__path)
-  endfor
-  let filesList = join(files)
-  call Zip(zipFile, filesList)
+"backup the file if file.bak doesn't exist
+function! Backup(file)
+    let bak=a:file.'.bak'
+    if empty(glob(bak))
+        exec 'w '.bak
+    endif
 endfunction
 
-call unite#custom#action('file', 'zip', ZipAction)
-unlet ZipAction
-let g:unite_enable_start_insert = 1
+function! DecodeOptLog(log)
+    call Backup(a:log)
+    let decoder=$HOME.'/mytools/DecodeOptLog.py'
+    exec '%!python '.decoder
+    exec 'highlight WARN ctermbg=red guibg=red'
+    exec 'match WARN /.*Assertion.*/'
+endfunction
 
+"decode timestamp in optima.log
+:command -nargs=0 Dl :call DecodeOptLog(expand('%:p'))
+
+function! ReadEvent(event)
+    call Backup(a:event)
+    let cmd= '!python c:/wxm/mytools/ReadEvents.py -f '.a:event.' | tee tmp'
+    exec cmd
+    call ExecuteCommand("cp tmp", " ".a:event)
+    call ExecuteCommand("rm -f ", "tmp")
+    exec 'e'
+endfunction
+
+:command -nargs=0 Re :call ReadEvent(expand('%:p'))
 " {{{ folding
 nnoremap zO zCzO
 
