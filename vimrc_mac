@@ -47,11 +47,12 @@ NeoBundle 'xolox/vim-shell'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundleDisable 'bling/vim-airline'  "not very useful to me
-NeoBundle 'terryma/vim-expand-region'
+NeoBundleDisable 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
-NeoBundle 'chrisbra/csv.vim'
+NeoBundleDisable 'chrisbra/csv.vim'
 NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'vimwiki'
+NeoBundle 'Valloric/YouCompleteMe'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
@@ -84,6 +85,7 @@ set gfn=Monaco:h12
 "open vimrc file in vertical window
 nnoremap <leader>ev <C-w><C-v><C-l>:e ~/myvim/vimrc_mac<cr>
 
+let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf_mac.py'
 syn on
 
 let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']

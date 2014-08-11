@@ -254,6 +254,10 @@ function! ReadEvent(event)
 endfunction
 
 :command -nargs=0 Re :call ReadEvent(expand('%:p'))
+
+"force to use python27 32 bit version
+let g:ycm_path_to_python_interpreter = 'c:/Python27/pythonw.exe'
+let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
 " {{{ folding
 nnoremap zO zCzO
 
