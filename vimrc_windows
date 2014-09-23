@@ -269,8 +269,6 @@ endfunction
 :command -range Pa <line1>,<line2>!python c:/wxm/mytools/Parameters.py
 :command! -range -nargs=1 Awk <line1>,<line2>!python c:/wxm/soft/pawk/pawk.py <args>
 :command! -range Ee <line1>,<line2>!python c:/wxm/mytools/extractEeprom.py
-=======
-:command -nargs=0 Re :call ReadEvent(expand('%:p'))
 
 "force to use python27 32 bit version
 let g:ycm_path_to_python_interpreter = 'c:/Python27/pythonw.exe'
