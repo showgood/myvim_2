@@ -1,0 +1,237 @@
+set runtimepath=$HOME/myvim,$VIMRUNTIME,$HOME/soft
+set directory=.,$TMP,$TEMP
+let ag='/usr/bin/ag'
+
+"{{{ NeoBundle
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+
+" Required:
+set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+" Required:
+call neobundle#rc(expand('$HOME/myvim/bundle'))
+
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundleDisable 'altercation/vim-colors-solarized'
+NeoBundle 'xolox/vim-notes'
+NeoBundle 'Shougo/vimproc.vim'
+NeoBundleDisable 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'Spaceghost/vim-matchit'
+NeoBundle 'showgood/tagbar'
+NeoBundle 'kana/vim-textobj-function'
+NeoBundle 'ReplaceWithRegister'
+NeoBundle 'showgood/misc_vim'
+NeoBundle 'showgood/vim_mark'
+NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'vim-scripts/VisIncr'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
+NeoBundle 'xolox/vim-shell'
+NeoBundleDisable 't9md/vim-choosewin'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundleDisable 'bling/vim-airline'  "not very useful to me
+NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'mbbill/undotree'
+NeoBundleDisable 'chrisbra/csv.vim'
+NeoBundle 'bkad/CamelCaseMotion'
+NeoBundle 'kshenoy/vim-signature'
+NeoBundleDisable 'dkprice/vim-easygrep'
+NeoBundle 'vimwiki'
+NeoBundleDisable 'tommcdo/vim-exchange'
+NeoBundle 'godlygeek/tabular'
+NeoBundleDisable 'dhruvasagar/vim-table-mode'
+NeoBundle 'johnsyweb/vim-makeshift'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundleDisable 'mbbill/VimExplorer'
+NeoBundle 'vim-scripts/LineJuggler'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-ref'
+NeoBundleDisable 'severin-lemaignan/vim-minimap'
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'kana/vim-operator-user'
+NeoBundle 'rhysd/vim-clang-format'
+"NeoBundle 'showgood/eclim'
+"NeoBundle 'jonathanfilip/vim-lucius'
+"NeoBundle 'zaiste/Atom'
+ "NeoBundle 'Shougo/neosnippet.vim'
+ "NeoBundle 'Shougo/neosnippet-snippets'
+"Bundle 'ZoomWin'
+
+ " You can specify revision/branch/tag.
+ "NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+ " Required:
+ filetype plugin indent on
+
+ " If there are uninstalled bundles found on startup,
+ " this will conveniently prompt you to install them.
+NeoBundleCheck
+"}}}
+
+autocmd!
+
+:command -nargs=0 GUI :cd $OPTIMA_GUI
+:command -nargs=0 MB :cd $OPTIMA_MB
+
+set clipboard=unnamed
+set clipboard+=unnamedplus
+set clipboard+=autoselect
+set gfn=Monaco\ 11
+
+"{{{appearance configuration
+" those are acceptable colorschemes I have tried
+"colorscheme Atom
+ colorscheme molokai
+"colorscheme solarized
+" colorscheme hybrid
+
+" disable menu & toolbar
+set guioptions-=m
+set guioptions-=T
+
+" make vim window maximized when startup
+"autocmd GUIEnter * simalt ~x
+"}}}
+
+" {{{ SVN related mappings
+:command -nargs=0 Log :call ExecuteCommand("TortoiseProc.exe /command:log /path:", "%")
+:command -nargs=0 Diff :call ExecuteCommand("TortoiseProc.exe /command:diff /path:", "%")
+:command -nargs=0 Revert :call ExecuteCommand("TortoiseProc.exe /command:revert /path:", "%")
+:command -nargs=0 SvnAdd :call ExecuteCommand("TortoiseProc.exe /command:add /path:", "%")
+"}}}
+
+"{{{interaction with explorere, shell
+"******* interaction with explorere, shell **********************
+function OpenShellIn(location)
+    let cmd='!start '.g:console. ' /dir '.a:location . ' /single /cmd {bash}'
+    execute cmd
+endfunction
+
+function OpenExplorerIn(location)
+    execute  '!start '. g:explorer . ' /OPEN '.a:location
+endfunction
+
+" open current file folder in Bash(Console)
+:command -nargs=0 Bash :call OpenShellIn('%:p:h')
+
+"open current file folder in multicommander
+:command -nargs=0 Exp :call OpenExplorerIn('%:p:h')
+
+"open the Current working directory in MultiCommander
+:command -nargs=0 CWD :call OpenExplorerIn(getcwd())
+
+"open current working directory in Bash(Console)
+:command -nargs=0 BC :call OpenShellIn(getcwd())
+"******* END: interaction with explorere, shell ******************
+"}}}
+
+let g:shell_mappings_enabled=0
+
+source $HOME/myvim/vimrc_common
+source $HOME/myvim/functions.vim
+filetype off
+
+:command -nargs=0 Comp :call CompareSideBySide()
+:command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
+vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
+:command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
+
+let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
+
+let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
+let g:notes_suffix = '.note'
+let g:notes_title_sync = 'no'
+
+" OR ELSE just highlight the match in red...
+function! HLNext (blinktime)
+    highlight WhiteOnRed ctermfg=white ctermbg=red
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+    let target_pat = '\c\%#'.@/
+    let ring = matchadd('WhiteOnRed', target_pat, 101)
+    redraw
+    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+    call matchdelete(ring)
+    redraw
+endfunction
+
+"free mapping so far
+",a
+",d
+",f
+",g
+",h
+",i
+",l
+",q
+",r
+",t
+",v
+",x
+",y
+syn on
+
+"open vimrc file in vertical window
+nnoremap <leader>ev <C-w><C-v><C-l>:e $HOME/myvim/vimrc_linux<cr>
+
+autocmd BufReadPre SConstruct set filetype=python
+autocmd BufReadPre SConscript set filetype=python
+
+"backup the file if file.bak doesn't exist
+function! Backup(file)
+    let bak=a:file.'.bak'
+    if empty(glob(bak))
+        exec 'w '.bak
+    endif
+endfunction
+
+function! DecodeOptLog(log)
+    call Backup(a:log)
+    let decoder=$HOME.'wxm/mytools/DecodeOptLog.py'
+    exec '%!python '.decoder
+    exec 'highlight WARN ctermbg=red guibg=red'
+    exec 'match WARN /.*Assertion.*/'
+endfunction
+
+"decode timestamp in optima.log
+:command -nargs=0 Dl :call DecodeOptLog(expand('%:p'))
+
+function! ReadEvent(event)
+    call Backup(a:event)
+    let cmd= '!python /home/xiaoming/wxm/mytools/ReadEvents.py -f '.a:event.' | tee tmp'
+    exec cmd
+    call ExecuteCommand("cp tmp", " ".a:event)
+    call ExecuteCommand("rm -f ", "tmp")
+    exec 'e'
+endfunction
+
+:command -nargs=0 Re :call ReadEvent(expand('%:p'))
+:command -range Ais <line1>,<line2>!python /home/xiaoming/wxm/mytools/DecodeAIS.py
+:command! -range Ots <line1>,<line2>!python /home/xiaoming/wxm/mytools/DecodeOTS.py
+:command -range Pa <line1>,<line2>!python /home/xiaoming/wxm/mytools/Parameters.py
+:command! -range Ee <line1>,<line2>!python /home/xiaoming/wxm/mytools/extractEeprom.py
+
+let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf_linux.py'
+let g:clang_format#command='~/build_llvm/Release+Asserts/bin/clang-format'
+:command! -nargs=0 Nc :set completefunc=neocomplete#complete#auto_complete
+" {{{ folding
+nnoremap zO zCzO
+
+" Use ,z to "focus" the current fold.
+nnoremap <leader>Z zMzvzz
+" }}}
+"/* vim: set foldmethod=marker: */

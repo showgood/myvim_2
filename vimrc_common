@@ -1,8 +1,8 @@
 " {{{ vim settings
 filetype plugin on " enable loading the plugin for appropriate file type 
 
-let mapleader = ","
-let maplocalleader =","
+let mapleader = " "
+let maplocalleader =" "
 set termencoding=utf-8
 set encoding=utf-8
 set laststatus=2
@@ -268,7 +268,7 @@ let g:vimwiki_list = [{'path': $HOME.'/Dropbox/trunksync/notes',
   \ 'path_html': $HOME.'/mywiki_html', 'ext':'.markdown',
   \ 'diary_rel_path':'',
   \ 'index':'HomePage', 'diary_link_count': 5, 'syntax':'markdown'},
-  \ {'path': $HOME.'/workwiki',
+  \ {'path': $HOME.'/workwiki', 'syntax':'markdown', 'ext':'.markdown',
   \ 'path_html' : $HOME.'/workwiki_html'}]
 
 let g:vimwiki_camel_case = 0
@@ -307,7 +307,7 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#same_filetypes = {}
 let g:neocomplete#same_filetypes._ = '_'
 let g:neocomplete#enable_auto_select=1
-
+let g:neocomplete#enable_refresh_always = 1
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'text' : $HOME.'/myvim/words.txt',
@@ -462,11 +462,13 @@ let g:ycm_confirm_extra_conf=0
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_key_list_select_completion = ['<Enter>', '<Down>']
+let g:ycm_filetype_whitelist = { 'cpp': 1, 'python':1, 'vim':1 }
+let g:ycm_filetype_blacklist = { 'dot' : 1, 'markdown': 1, 'md': 1, 'sd': 1}
 
 nnoremap <silent> <cr> :YcmCompleter GoToDefinitionElseDeclaration <cr>
 if has('autocmd')
   autocmd FileType cpp,vim,python nested NeoCompleteLock
- endif
+endif
 "}}}
 
 "{{{Replace with register customization
