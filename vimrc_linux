@@ -16,16 +16,14 @@ call neobundle#rc(expand('$HOME/myvim/bundle'))
 " Let NeoBundle manage NeoBundle
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'showgood/eclim_luna'
+NeoBundle 'morhetz/gruvbox'
+NeoBundle 'sickill/vim-monokai'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
-NeoBundleDisable 'altercation/vim-colors-solarized'
-NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
-NeoBundleDisable 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'Spaceghost/vim-matchit'
 NeoBundle 'showgood/tagbar'
@@ -36,34 +34,33 @@ NeoBundle 'showgood/vim_mark'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'vim-scripts/VisIncr'
 NeoBundle 'SirVer/ultisnips'
-NeoBundle 'Shougo/vimshell'
 NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
-NeoBundle 'xolox/vim-shell'
-NeoBundleDisable 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundleDisable 'bling/vim-airline'  "not very useful to me
 NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
-NeoBundleDisable 'chrisbra/csv.vim'
 NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'kshenoy/vim-signature'
-NeoBundleDisable 'dkprice/vim-easygrep'
 NeoBundle 'vimwiki'
-NeoBundleDisable 'tommcdo/vim-exchange'
 NeoBundle 'godlygeek/tabular'
-NeoBundleDisable 'dhruvasagar/vim-table-mode'
-NeoBundle 'johnsyweb/vim-makeshift'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundleDisable 'mbbill/VimExplorer'
-NeoBundle 'vim-scripts/LineJuggler'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'thinca/vim-ref'
-NeoBundleDisable 'severin-lemaignan/vim-minimap'
-NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'tomasr/molokai'
-NeoBundle 'kana/vim-operator-user'
 NeoBundle 'rhysd/vim-clang-format'
+"NeoBundle 'Raimondi/delimitMate'
+"NeoBundle 'vim-scripts/LineJuggler'
+"NeoBundleDisable 'chrisbra/csv.vim'
+"NeoBundleDisable 'dkprice/vim-easygrep'
+"NeoBundleDisable 'tommcdo/vim-exchange'
+"NeoBundleDisable 'dhruvasagar/vim-table-mode'
+"NeoBundle 'johnsyweb/vim-makeshift'
+"NeoBundleDisable 'mbbill/VimExplorer'
+"NeoBundle 'thinca/vim-quickrun'
+"NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundle 'altercation/vim-colors-solarized'
+"NeoBundleDisable 'scrooloose/nerdtree'
+"NeoBundle 'thinca/vim-ref'
+NeoBundle 'kana/vim-textobj-user'
+"NeoBundleDisable 'severin-lemaignan/vim-minimap'
+"NeoBundle 'Valloric/YouCompleteMe'
+"NeoBundle 'kana/vim-operator-user'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
@@ -90,18 +87,25 @@ autocmd!
 set clipboard=unnamed
 set clipboard+=unnamedplus
 set clipboard+=autoselect
-set gfn=Monaco\ 11
 
 "{{{appearance configuration
 " those are acceptable colorschemes I have tried
 "colorscheme Atom
- colorscheme molokai
+if has("gui_running")
+    set guioptions-=m
+    set guioptions-=T
+else
+    set term=xterm 
+    set t_Co=256
+endif
+
+"colorscheme monokai
+colorscheme molokai
+"colorscheme gruvbox
 "colorscheme solarized
 " colorscheme hybrid
-
+"let g:solarized_termcolors=256
 " disable menu & toolbar
-set guioptions-=m
-set guioptions-=T
 
 " make vim window maximized when startup
 "autocmd GUIEnter * simalt ~x
@@ -143,18 +147,11 @@ let g:shell_mappings_enabled=0
 
 source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
+source $HOME/myvim/vimrc_eclim
 filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
-:command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
 vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
-:command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
-
-let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
-
-let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
-let g:notes_suffix = '.note'
-let g:notes_title_sync = 'no'
 
 " OR ELSE just highlight the match in red...
 function! HLNext (blinktime)
@@ -212,7 +209,9 @@ endfunction
 
 function! ReadEvent(event)
     call Backup(a:event)
-    let cmd= '!python /home/xiaoming/wxm/mytools/ReadEvents.py -f '.a:event.' | tee tmp'
+    let eventReader=$HOME.'wxm/mytools/ReadEvents.py'
+
+    let cmd= '!python '.eventReader.' -f '.a:event.' | tee tmp'
     exec cmd
     call ExecuteCommand("cp tmp", " ".a:event)
     call ExecuteCommand("rm -f ", "tmp")
@@ -225,7 +224,6 @@ endfunction
 :command -range Pa <line1>,<line2>!python /home/xiaoming/wxm/mytools/Parameters.py
 :command! -range Ee <line1>,<line2>!python /home/xiaoming/wxm/mytools/extractEeprom.py
 
-let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf_linux.py'
 let g:clang_format#command='~/build_llvm/Release+Asserts/bin/clang-format'
 :command! -nargs=0 Nc :set completefunc=neocomplete#complete#auto_complete
 " {{{ folding
@@ -234,4 +232,5 @@ nnoremap zO zCzO
 " Use ,z to "focus" the current fold.
 nnoremap <leader>Z zMzvzz
 " }}}
+let g:rehash256 = 1
 "/* vim: set foldmethod=marker: */

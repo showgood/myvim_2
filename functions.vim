@@ -38,29 +38,6 @@
     "call xolox#shell#execute(cmd, 0)
 "endfunction
 
-" -------------------------------
-"  customization for eclim
-" do context search based on the current file type
-" Author: showgood
-" -------------------------------
-"function! DoSearch()
-    "let buf_filetype = getbufvar(bufnr('%'),'&filetype')
-    "let searchCmd = ''
-    "if buf_filetype ==# 'cpp'
-        "exec 'CSearchContext'
-    "elseif buf_filetype ==# 'python'
-        "exec 'PythonSearchContext'
-    "elseif buf_filetype ==# 'java'
-        "exec 'JavaSearchContext'
-    "elseif buf_filetype ==# 'ruby'
-        "exec 'RubySearchContext'
-    "elseif buf_filetype ==# 'xml'
-        "let keyword = expand("<cword>")
-        "let cmd = "CSearch -p ".keyword." -x declaration"
-        "exec cmd
-    "endif
-"endf
-
 "------------------------------------------------------------------------
 "simple wrapper so we can pass argument to TortoiseSvn
 " depends on vim-shell plugin
