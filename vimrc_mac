@@ -3,10 +3,6 @@ filetype off
 
 set runtimepath=$HOME/myvim,$VIMRUNTIME
 
-"{{{ vundle bundles
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc("$HOME/myvim/bundle")
-
 "{{{ NeoBundle
 if has('vim_starting')
   set nocompatible               " Be iMproved
@@ -17,6 +13,7 @@ endif
 
 " Required:
 call neobundle#rc(expand('$HOME/myvim/bundle'))
+set rtp+=~/powerline/powerline/bindings/vim
 
 " Let NeoBundle manage NeoBundle
 " Required:
@@ -56,10 +53,11 @@ NeoBundle 'Valloric/YouCompleteMe'
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
-"NeoBundle 'tomasr/molokai'
+NeoBundle 'tomasr/molokai'
  "NeoBundle 'Shougo/neosnippet.vim'
  "NeoBundle 'Shougo/neosnippet-snippets'
- "NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'noahfrederick/vim-hemisu'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -73,13 +71,16 @@ NeoBundle 'Valloric/YouCompleteMe'
 NeoBundleCheck
 "}}}
 
+let ag='/usr/local/bin/ag'
 source $HOME/myvim/functions.vim
 source $HOME/myvim/vimrc_common
 
 autocmd!
 
-set background=dark
-colorscheme solarized
+"set background=dark
+"colorscheme solarized
+colorscheme molokai
+"colorscheme hemisu
 set gfn=Monaco:h12
 
 "open vimrc file in vertical window
