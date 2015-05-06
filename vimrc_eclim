@@ -1,7 +1,27 @@
 " {{{ customization for eclim
 " -------------------------------
 "  customization for eclim
+" do context search based on the current file type
+" Author: showgood
 " -------------------------------
+function! DoSearch()
+    let buf_filetype = getbufvar(bufnr('%'),'&filetype')
+    let searchCmd = ''
+    if buf_filetype ==# 'cpp'
+        exec 'CSearchContext'
+    elseif buf_filetype ==# 'python'
+        exec 'PythonSearchContext'
+    elseif buf_filetype ==# 'java'
+        exec 'JavaSearchContext'
+    elseif buf_filetype ==# 'ruby'
+        exec 'RubySearchContext'
+    elseif buf_filetype ==# 'xml'
+        let keyword = expand("<cword>")
+        let cmd = "CSearch -p ".keyword." -x declaration"
+        exec cmd
+    endif
+endf
+
 nnoremap <silent> <leader>lf :LocateFile<cr>
 nnoremap <silent> <cr> :call DoSearch()<cr>
 " nnoremap <silent> <S-cr> :CSearch -p <c-r>=expand("<cword>")<cr> -s all -x references<cr>
@@ -18,7 +38,7 @@ let g:EclimSearchSkipList = ['obj', 'dep', 'dbo', 'obmp', 'o', 'ti',
 nnoremap <F1> :ProjectGrep /<c-r>=expand("<cword>")<cr>/ **/*.xml
 let g:EclimProjectKeepLocalHistory = 1
 
-nnoremap <leader>de <C-w><C-v><C-l>:e $HOME/myvim/bundle/eclim-1.7.4/doc/vim/cheatsheet.txt<cr>
+nnoremap <leader>de <C-w><C-v><C-l>:e $HOME/myvim/bundle/eclim_luna/eclim/doc/vim/cheatsheet.txt<cr>
 map <c-F2> :ProjectTreeToggle<cr>
 
 " search via Google

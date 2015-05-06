@@ -1,9 +1,10 @@
+echo $HOME
 set runtimepath=$HOME/myvim,$VIMRUNTIME,$HOME/soft
-let $TMP="c:/tmp"
-let $TEMP="c:/tmp"
+let $TMP="/cygdrive/tmp"
+let $TEMP="/cygdrive/tmp"
 set directory=.,$TMP,$TEMP
 let ag=$HOME.'/soft/ag.exe'
-let g:mail="c:/Program Files (x86)/Microsoft Office/Office14/OUTLOOK.exe"
+let g:mail="/cygdrive/c/Program Files (x86)/Microsoft Office/Office14/OUTLOOK.exe"
 let g:use_cygwin=1
 
 let g:explorer=$HOME.'/soft/multicommander/MultiCommander.exe'
@@ -16,7 +17,7 @@ if has('vim_starting')
 " Required:
 set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-
+set rtp+=~/powerline/powerline/bindings/vim
 " Required:
 call neobundle#rc(expand('$HOME/myvim/bundle'))
 
@@ -32,11 +33,11 @@ NeoBundle 'Shougo/vimproc.vim'
 NeoBundleDisable 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'kana/vim-textobj-user'
+NeoBundleDisable 'kana/vim-textobj-user' "causing weird error on babun
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'Spaceghost/vim-matchit'
 NeoBundle 'showgood/tagbar'
-NeoBundle 'kana/vim-textobj-function'
+NeoBundleDisable 'kana/vim-textobj-function' "causing weird error on babun
 NeoBundle 'ReplaceWithRegister'
 NeoBundle 'showgood/misc_vim'
 
@@ -46,7 +47,7 @@ NeoBundle 'showgood/vim_mark'
 "highlight will disappear after converting to html
 NeoBundleDisable 'vim-scripts/Mark--Karkat'
 
-NeoBundle 'Shougo/neocomplete.vim'
+NeoBundleDisable 'Shougo/neocomplete.vim'
 NeoBundle 'vim-scripts/VisIncr'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'Shougo/vimshell'
@@ -80,6 +81,7 @@ NeoBundleDisable 'vim-scripts/a_pair' "not quite working, yip copy extra lines/c
 NeoBundleDisable 'bbchung/clighter' "not quite working
 NeoBundleDisable 'jaxbot/semantic-highlight.vim' "not quite working, too much colors
 "NeoBundle 'showgood/eclim'
+NeoBundle 'showgood/eclim_luna'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
 NeoBundle 'tomasr/molokai'
@@ -165,12 +167,14 @@ let g:shell_mappings_enabled=0
 
 source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
+source $HOME/myvim/vimrc_eclim
+source $HOME/myvim/vimrc_unite
 filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
 :command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
 vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
-:command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
+:command -nargs=0 Excel :!start /cygdrive/c/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
 
 let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
 
@@ -262,7 +266,7 @@ endfunction
 
 function! ReadEvent(event)
     call Backup(a:event)
-    let cmd= '!python c:/wxm/mytools/ReadEvents.py -f '.a:event.' | tee tmp'
+    let cmd= '!python /cygdrive/c/wxm/mytools/ReadEvents.py -f '.a:event.' | tee tmp'
     exec cmd
     call ExecuteCommand("cp tmp", " ".a:event)
     call ExecuteCommand("rm -f ", "tmp")
@@ -270,14 +274,14 @@ function! ReadEvent(event)
 endfunction
 
 :command -range=0 Re :call ReadEvent(expand('%:p'))
-:command -range Ais <line1>,<line2>!python c:/wxm/mytools/DecodeAIS.py
-:command -range Ots <line1>,<line2>!python c:/wxm/mytools/DecodeOTS.py
-:command -range Pa <line1>,<line2>!python c:/wxm/mytools/Parameters.py
-:command! -range -nargs=1 Awk <line1>,<line2>!python c:/wxm/soft/pawk/pawk.py <args>
-:command! -range Ee <line1>,<line2>!python c:/wxm/mytools/extractEeprom.py
+:command -range Ais <line1>,<line2>!python /cygdrive/c/wxm/mytools/DecodeAIS.py
+:command -range Ots <line1>,<line2>!python /cygdrive/c/wxm/mytools/DecodeOTS.py
+:command -range Pa <line1>,<line2>!python /cygdrive/c/wxm/mytools/Parameters.py
+:command! -range -nargs=1 Awk <line1>,<line2>!python /cygdrive/c/wxm/soft/pawk/pawk.py <args>
+:command! -range Ee <line1>,<line2>!python /cygdrive/c/wxm/mytools/extractEeprom.py
 
 "force to use python27 32 bit version
-let g:ycm_path_to_python_interpreter = 'c:/Python27/pythonw.exe'
+let g:ycm_path_to_python_interpreter = '/cygdrive/c/Python27/pythonw.exe'
 let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
 " {{{ folding
 nnoremap zO zCzO
@@ -287,3 +291,4 @@ nnoremap <leader>Z zMzvzz
 " }}}
 let g:html_use_xhtml = 1
 "/* vim: set foldmethod=marker: */
+
