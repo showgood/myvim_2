@@ -13,7 +13,7 @@ endif
 
 " Required:
 call neobundle#rc(expand('$HOME/myvim/bundle'))
-set rtp+=~/powerline/powerline/bindings/vim
+"set rtp+=~/powerline/powerline/bindings/vim
 
 " Let NeoBundle manage NeoBundle
 " Required:
@@ -43,7 +43,7 @@ NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
 NeoBundle 'xolox/vim-shell'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundleDisable 'bling/vim-airline'  "not very useful to me
+NeoBundle 'bling/vim-airline'
 NeoBundleDisable 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
 NeoBundleDisable 'chrisbra/csv.vim'
@@ -74,6 +74,8 @@ NeoBundleCheck
 let ag='/usr/local/bin/ag'
 source $HOME/myvim/functions.vim
 source $HOME/myvim/vimrc_common
+source $HOME/myvim/vimrc_ycm
+source $HOME/myvim/vimrc_unite
 
 autocmd!
 
@@ -85,9 +87,9 @@ set gfn=Monaco:h12
 
 "open vimrc file in vertical window
 nnoremap <leader>ev <C-w><C-v><C-l>:e ~/myvim/vimrc_mac<cr>
-
-let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf_mac.py'
 syn on
 
 let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']
 let g:notes_suffix = '.txt'
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'powerlineish'
