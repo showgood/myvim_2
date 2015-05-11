@@ -3,9 +3,8 @@ set runtimepath=$HOME/myvim,$VIMRUNTIME,$HOME/soft
 let $TMP="/cygdrive/tmp"
 let $TEMP="/cygdrive/tmp"
 set directory=.,$TMP,$TEMP
-let ag=$HOME.'/soft/ag.exe'
 let g:mail="/cygdrive/c/Program Files (x86)/Microsoft Office/Office14/OUTLOOK.exe"
-let g:use_cygwin=1
+"let g:use_cygwin=1
 
 let g:explorer=$HOME.'/soft/multicommander/MultiCommander.exe'
 let g:console=$HOME.'/soft/cm_der/vendor/conemu-maximus5/ConEmu64.exe'
@@ -27,7 +26,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
 NeoBundleDisable 'altercation/vim-colors-solarized'
-NeoBundle 'xolox/vim-notes'
+"NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
 NeoBundleDisable 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -46,16 +45,16 @@ NeoBundle 'showgood/vim_mark'
 "highlight will disappear after converting to html
 NeoBundleDisable 'vim-scripts/Mark--Karkat'
 
-NeoBundleDisable 'Shougo/neocomplete.vim'
+NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'vim-scripts/VisIncr'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'Shougo/vimshell'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
-NeoBundle 'xolox/vim-shell'
-NeoBundleDisable 't9md/vim-choosewin'
+"NeoBundle 'kien/ctrlp.vim'
+"NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
+"NeoBundle 'xolox/vim-shell'
+"NeoBundleDisable 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'bling/vim-airline'  "not very useful to me
+NeoBundle 'bling/vim-airline'
 NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
 NeoBundleDisable 'chrisbra/csv.vim'
@@ -63,7 +62,7 @@ NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundleDisable 'dkprice/vim-easygrep'
 NeoBundle 'vimwiki'
-NeoBundle 'tommcdo/vim-exchange'
+"NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'godlygeek/tabular'
 NeoBundleDisable 'dhruvasagar/vim-table-mode'
 NeoBundleDisable 'showgood/YCM_windows'
@@ -72,13 +71,13 @@ NeoBundle 'johnsyweb/vim-makeshift'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundleDisable 'mbbill/VimExplorer'
 NeoBundle 'vim-scripts/LineJuggler'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'thinca/vim-ref'
-NeoBundleDisable 'severin-lemaignan/vim-minimap' "useless at the moment
+"NeoBundle 'thinca/vim-quickrun'
+"NeoBundle 'thinca/vim-ref'
+"NeoBundleDisable 'severin-lemaignan/vim-minimap' "useless at the moment
 NeoBundle 'plasticboy/vim-markdown'
-NeoBundleDisable 'vim-scripts/a_pair' "not quite working, yip copy extra lines/characters
-NeoBundleDisable 'bbchung/clighter' "not quite working
-NeoBundleDisable 'jaxbot/semantic-highlight.vim' "not quite working, too much colors
+"NeoBundleDisable 'vim-scripts/a_pair' "not quite working, yip copy extra lines/characters
+"NeoBundleDisable 'bbchung/clighter' "not quite working
+"NeoBundleDisable 'jaxbot/semantic-highlight.vim' "not quite working, too much colors
 "NeoBundle 'showgood/eclim'
 NeoBundle 'showgood/eclim_luna'
 "NeoBundle 'jonathanfilip/vim-lucius'
@@ -100,9 +99,6 @@ NeoBundleCheck
 "}}}
 
 autocmd!
-
-:command -nargs=0 GUI :cd $OPTIMA_GUI
-:command -nargs=0 MB :cd $OPTIMA_MB
 
 "{{{appearance configuration
 " those are acceptable colorschemes I have tried
@@ -175,11 +171,11 @@ filetype off
 vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
 :command -nargs=0 Excel :!start /cygdrive/c/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
 
-let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
+"let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
 
-let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
-let g:notes_suffix = '.note'
-let g:notes_title_sync = 'no'
+"let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
+"let g:notes_suffix = '.note'
+"let g:notes_title_sync = 'no'
 
 " OR ELSE just highlight the match in red...
 function! HLNext (blinktime)
@@ -211,7 +207,7 @@ endfunction
 syn on
 
 "open vimrc file in vertical window
-nnoremap <leader>ev <C-w><C-v><C-l>:e $HOME/myvim/vimrc_windows<cr>
+nnoremap <leader>ev <C-w><C-v><C-l>:e $HOME/myvim/vimrc_cygwin<cr>
 
 autocmd BufReadPre SConstruct set filetype=python
 autocmd BufReadPre SConscript set filetype=python
@@ -280,8 +276,8 @@ endfunction
 :command! -range Ee <line1>,<line2>!python /cygdrive/c/wxm/mytools/extractEeprom.py
 
 "force to use python27 32 bit version
-let g:ycm_path_to_python_interpreter = '/cygdrive/c/Python27/pythonw.exe'
-let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
+"let g:ycm_path_to_python_interpreter = '/cygdrive/c/Python27/pythonw.exe'
+"let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
 " {{{ folding
 nnoremap zO zCzO
 
