@@ -17,7 +17,6 @@ if has('vim_starting')
 " Required:
 set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-set rtp+=~/powerline/powerline/bindings/vim
 " Required:
 call neobundle#rc(expand('$HOME/myvim/bundle'))
 
@@ -56,7 +55,7 @@ NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
 NeoBundle 'xolox/vim-shell'
 NeoBundleDisable 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundleDisable 'bling/vim-airline'  "not very useful to me
+NeoBundle 'bling/vim-airline'  "not very useful to me
 NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
 NeoBundleDisable 'chrisbra/csv.vim'
@@ -292,3 +291,5 @@ nnoremap <leader>Z zMzvzz
 let g:html_use_xhtml = 1
 "/* vim: set foldmethod=marker: */
 
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'powerlineish'
