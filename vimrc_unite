@@ -95,8 +95,7 @@ nnoremap [unite]r :Unite resume <cr>
 nnoremap [unite]f :Unite -start-insert file <cr>
 nnoremap [unite]h :<C-u>UniteWithBufferDir -start-insert file<cr>
 nnoremap [unite]c :<C-u>UniteWithCurrentDir -start-insert file<cr>
-nnoremap [unite]mb :Unite bookmark:mb <cr>
-nnoremap [unite]mu :Unite bookmark:ui <cr>
 " re-open last Unite buffer
 nnoremap <silent>[unite]u :<C-u>UniteResume<CR>
+nnoremap <silent>[unite]; :Unite line<CR>
 "}}}
