@@ -7,7 +7,6 @@ let g:mail="/cygdrive/c/Program Files (x86)/Microsoft Office/Office14/OUTLOOK.ex
 "let g:use_cygwin=1
 
 let g:explorer=$HOME.'/soft/multicommander/MultiCommander.exe'
-let g:console=$HOME.'/soft/cm_der/vendor/conemu-maximus5/ConEmu64.exe'
 
 "{{{ NeoBundle
 if has('vim_starting')
