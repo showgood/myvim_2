@@ -48,7 +48,7 @@ NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'vim-scripts/VisIncr'
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'Shougo/vimshell'
-"NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'kien/ctrlp.vim'
 "NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
 "NeoBundle 'xolox/vim-shell'
 "NeoBundleDisable 't9md/vim-choosewin'
@@ -163,6 +163,7 @@ source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
 source $HOME/myvim/vimrc_eclim
 source $HOME/myvim/vimrc_unite
+source $HOME/myvim/vimrc_ctrlp
 filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
@@ -288,3 +289,5 @@ let g:html_use_xhtml = 1
 
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'powerlineish'
+
+nnoremap <silent>[unite]l :Unite file_rec/async<CR>
