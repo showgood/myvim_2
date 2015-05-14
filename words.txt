@@ -124,3 +124,8 @@ attribute
 immediately
 approach
 solution
+variable
+potential
+implementation
+optimization
+destructor

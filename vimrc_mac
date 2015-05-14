@@ -79,12 +79,14 @@ source $HOME/myvim/functions.vim
 source $HOME/myvim/vimrc_common
 "source $HOME/myvim/vimrc_ycm
 source $HOME/myvim/vimrc_unite
+source $HOME/myvim/vimrc_ctrlp
 
 autocmd!
 
-"set background=dark
-"colorscheme solarized
-colorscheme molokai
+set background=light
+colorscheme solarized
+let g:solarized_termcolors=256
+"colorscheme molokai
 "colorscheme hemisu
 set gfn=Monaco:h12
 
@@ -99,5 +101,3 @@ let g:airline_theme = 'powerlineish'
 let g:airline#extensions#tmuxline#enabled = 0
 let g:ctrlspace_default_mapping_key='<leader>i'
 
-"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-inoremap <expr><space>  pumvisible() ? neocomplete#close_popup() . "\<SPACE>" : "\<SPACE>"

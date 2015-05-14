@@ -306,7 +306,9 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#same_filetypes = {}
 let g:neocomplete#same_filetypes._ = '_'
-let g:neocomplete#enable_auto_select=1
+
+"this actually causes trouble than help
+"let g:neocomplete#enable_auto_select=1
 let g:neocomplete#enable_refresh_always = 1
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
@@ -314,6 +316,8 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'markdown' : $HOME.'/myvim/words.txt',
     \ 'scheme' : $HOME.'/.gosh_completions'
     \ }
+
+let g:neocomplete#enable_fuzzy_completion = 0
 
 "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
