@@ -61,6 +61,9 @@ NeoBundle 'tomasr/molokai'
  "NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'noahfrederick/vim-hemisu'
+
+"quite helpful
+NeoBundle 'wellle/tmux-complete.vim'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -100,4 +103,4 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#tmuxline#enabled = 0
 let g:ctrlspace_default_mapping_key='<leader>i'
-
+let g:tmuxcomplete#trigger = ''
