@@ -67,6 +67,7 @@ NeoBundle 'wellle/tmux-complete.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'honza/vim-snippets'
+NeoBundle 'osyo-manga/vim-marching'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -119,3 +120,13 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 
 " Tell Neosnippet about the other snippets
 let g:neosnippet#snippets_directory='~/myvim/bundle/vim-snippets/snippets,~/myvim/mysnippets/neosnippets'
+
+let g:marching_enable_neocomplete = 1
+"let g:marching_include_paths = [
+            "\ "/usr/include/c++/4.2.1" ]
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+
+let g:neocomplete#force_omni_input_patterns.cpp =
+    \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
