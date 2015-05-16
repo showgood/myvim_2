@@ -68,6 +68,9 @@ NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'osyo-manga/vim-marching'
+NeoBundle 'wellle/targets.vim'
+NeoBundle 'junegunn/seoul256.vim'
+NeoBundle 'scrooloose/syntastic'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -94,6 +97,16 @@ set background=light
 colorscheme solarized
 let g:solarized_termcolors=256
 "colorscheme molokai
+"colo seoul256
+
+" Light color scheme
+"colo seoul256-light
+"let g:seoul256_background = 236
+"colo seoul256
+
+" Switch
+"set background=dark
+"set background=light
 "colorscheme hemisu
 set gfn=Monaco:h12
 
@@ -130,3 +143,12 @@ endif
 
 let g:neocomplete#force_omni_input_patterns.cpp =
     \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
