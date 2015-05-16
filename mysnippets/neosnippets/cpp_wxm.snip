@@ -1,0 +1,91 @@
+snippet ifd
+abbr inclusion guard
+    #ifndef `toupper(substitute(expand('%:t'), '\.', "_", "g"))`
+    #define `toupper(substitute(expand('%:t'), '\.', "_", "g"))`
+
+    ${1}
+
+    #endif
+
+snippet rt
+abbr return abc
+    return ${1:0};
+    ${2}
+
+snippet algo
+abbr #include <algorithm>
+    #include <algorithm>
+    ${1}
+
+snippet ustd
+abbr using namespace std
+    using namespace std;
+    ${1}
+
+snippet un
+abbr using namespace {ns}
+    using namespace ${1:namespace};
+    ${2}
+
+snippet fori
+abbr for (int i; i < size; ++i)
+    for (int ${1:i} = ${3:0}; $1 < ${2:count}; ++$1)
+    {
+        ${4}
+    }
+
+snippet ctor
+abbr constructor
+    `expand('%:t:r')`::`expand('%:t:r')()`
+    : ${1:member}(${2:value})
+    {
+        ${3}
+    }
+
+snippet dtor
+abbr destructor
+    `expand('%:t:r')`::~`expand('%:t:r')()`
+    {
+    }
+
+snippet bv
+abbr put visual selection in a block
+    {
+        ${1:TARGET}
+    }
+
+snippet cs
+abbr adding ClassName::
+    `expand('%:t:r')`::
+
+snippet t
+abbr put visual selection in tag
+    <tag>${1:TARGET}</tag>
+
+snippet ex
+abbr extract the visual selection into a new function for refactor purpose
+    ${1:void} `expand('%:t:r')`::${2:function}(${3:arguments})
+    {
+        ${4:TARGET}
+        ${0}
+    }
+
+snippet cm
+abbr class method definition
+    ${1:void} `expand('%:t:r')`::${2:function}(${3:arguments})
+    {
+        ${0}
+    }
+
+#not perfect at moment
+#can't achieve same thing as UltiSnips
+#because neosnippet can't expand if there
+#is no whitespace before b
+#so current solution will leave a extra whitespace
+#after the text
+snippet b
+abbr start a block
+
+    {
+        ${1}
+    }

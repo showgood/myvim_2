@@ -34,7 +34,7 @@ NeoBundle 'kana/vim-textobj-function'
 NeoBundle 'ReplaceWithRegister'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'vim-scripts/VisIncr'
-NeoBundle 'SirVer/ultisnips'
+"NeoBundle 'SirVer/ultisnips'
 NeoBundle 'benmills/vimux'
 NeoBundle 'Shougo/vimshell'
 NeoBundle 'kien/ctrlp.vim'
@@ -64,6 +64,9 @@ NeoBundle 'noahfrederick/vim-hemisu'
 
 "quite helpful
 NeoBundle 'wellle/tmux-complete.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'honza/vim-snippets'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -104,3 +107,15 @@ let g:airline_theme = 'powerlineish'
 let g:airline#extensions#tmuxline#enabled = 0
 let g:ctrlspace_default_mapping_key='<leader>i'
 let g:tmuxcomplete#trigger = ''
+
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/myvim/bundle/vim-snippets/snippets,~/myvim/mysnippets/neosnippets'
