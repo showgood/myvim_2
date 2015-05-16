@@ -19,7 +19,7 @@ call neobundle#rc(expand('$HOME/myvim/bundle'))
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
-NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundle 'terryma/vim-multiple-cursors' " conflict with neocomplete
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
@@ -152,3 +152,17 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 "let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+   if exists(':NeoCompleteLock')==2
+       exe 'NeoCompleteLock'
+    endif
+endfunction
+
+"         " Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+    if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+    endif
+endfunction
