@@ -129,3 +129,7 @@ potential
 implementation
 optimization
 destructor
+configuration
+statement
+difficult
+misunderstood

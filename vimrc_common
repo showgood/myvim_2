@@ -63,8 +63,6 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,latin1
 set nosmd " don't show mode, otherwise vmath won't work properly
 "}}}
 
-"source $HOME/myvim/vimrc_dict
-
 nnoremap <leader>e :ChooseWin<cr>
 nnoremap <leader>fb =i{
 nnoremap dw "ddw
@@ -247,7 +245,7 @@ nmap <leader>fl :let @*=expand("%:p")<CR>
 "}}}
 
 "clear the highlight for previous search
-nnoremap <leader><space> :noh<cr>
+nnoremap <leader>, :noh<cr>
 
 nnoremap <F12> :TagbarToggle<CR>
 
@@ -311,10 +309,9 @@ let g:neocomplete#same_filetypes._ = '_'
 "let g:neocomplete#enable_auto_select=1
 let g:neocomplete#enable_refresh_always = 1
 let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'text' : $HOME.'/myvim/words.txt',
-    \ 'markdown' : $HOME.'/myvim/words.txt',
-    \ 'scheme' : $HOME.'/.gosh_completions'
+    \ 'default' : "",
+    \ '_' : $HOME.'/myvim/words.txt',
+    \ 'text' : $HOME.'/myvim/words.txt'
     \ }
 
 let g:neocomplete#enable_fuzzy_completion = 0

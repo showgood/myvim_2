@@ -19,7 +19,7 @@ call neobundle#rc(expand('$HOME/myvim/bundle'))
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundle 'terryma/vim-multiple-cursors' 
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
@@ -71,6 +71,7 @@ NeoBundle 'osyo-manga/vim-marching'
 NeoBundle 'wellle/targets.vim'
 NeoBundle 'junegunn/seoul256.vim'
 NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Shougo/vimfiler.vim'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -166,3 +167,7 @@ function! Multiple_cursors_after()
     exe 'NeoCompleteUnlock'
     endif
 endfunction
+
+let g:loaded_netrwPlugin = 1
+let g:vimfiler_as_default_explorer = 1
+
