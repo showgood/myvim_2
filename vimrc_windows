@@ -25,11 +25,11 @@ call neobundle#rc(expand('$HOME/myvim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundleDisable 'terryma/vim-multiple-cursors' " conflict with neocomplete
-NeoBundleDisable 'altercation/vim-colors-solarized'
-NeoBundle 'xolox/vim-notes'
+NeoBundle 'terryma/vim-multiple-cursors' " conflict with neocomplete
+NeoBundle 'altercation/vim-colors-solarized'
+"NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
-NeoBundleDisable 'scrooloose/nerdtree'
+"NeoBundleDisable 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'kana/vim-textobj-user'
@@ -48,43 +48,41 @@ NeoBundleDisable 'vim-scripts/Mark--Karkat'
 
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'vim-scripts/VisIncr'
-NeoBundle 'SirVer/ultisnips'
+"NeoBundle 'SirVer/ultisnips'
 NeoBundle 'Shougo/vimshell'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
 NeoBundle 'xolox/vim-shell'
-NeoBundleDisable 't9md/vim-choosewin'
+"NeoBundleDisable 't9md/vim-choosewin'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundleDisable 'bling/vim-airline'  "not very useful to me
-NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'bling/vim-airline'  "not very useful to me
+"NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
-NeoBundleDisable 'chrisbra/csv.vim'
+"NeoBundleDisable 'chrisbra/csv.vim'
 NeoBundle 'bkad/CamelCaseMotion'
 NeoBundle 'kshenoy/vim-signature'
-NeoBundleDisable 'dkprice/vim-easygrep'
+"NeoBundleDisable 'dkprice/vim-easygrep'
 NeoBundle 'vimwiki'
-NeoBundle 'tommcdo/vim-exchange'
+"NeoBundle 'tommcdo/vim-exchange'
 NeoBundle 'godlygeek/tabular'
-NeoBundleDisable 'dhruvasagar/vim-table-mode'
-NeoBundleDisable 'showgood/YCM_windows'
+"NeoBundleDisable 'dhruvasagar/vim-table-mode'
+"NeoBundleDisable 'showgood/YCM_windows'
 NeoBundle 'vim-scripts/stlrefvim'
-NeoBundle 'johnsyweb/vim-makeshift'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundleDisable 'mbbill/VimExplorer'
-NeoBundle 'vim-scripts/LineJuggler'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'thinca/vim-ref'
-NeoBundleDisable 'severin-lemaignan/vim-minimap' "useless at the moment
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundleDisable 'vim-scripts/a_pair' "not quite working, yip copy extra lines/characters
-NeoBundleDisable 'bbchung/clighter' "not quite working
-NeoBundleDisable 'jaxbot/semantic-highlight.vim' "not quite working, too much colors
+"NeoBundle 'johnsyweb/vim-makeshift'
+"NeoBundle 'Raimondi/delimitMate'
+"NeoBundle 'vim-scripts/LineJuggler'
+"NeoBundle 'thinca/vim-quickrun'
+"NeoBundle 'thinca/vim-ref'
+"NeoBundle 'plasticboy/vim-markdown'
+"NeoBundleDisable 'vim-scripts/a_pair' "not quite working, yip copy extra lines/characters
+"NeoBundleDisable 'bbchung/clighter' "not quite working
+"NeoBundleDisable 'jaxbot/semantic-highlight.vim' "not quite working, too much colors
 "NeoBundle 'showgood/eclim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
 NeoBundle 'tomasr/molokai'
- "NeoBundle 'Shougo/neosnippet.vim'
- "NeoBundle 'Shougo/neosnippet-snippets'
+ NeoBundle 'Shougo/neosnippet.vim'
+ NeoBundle 'Shougo/neosnippet-snippets'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -165,6 +163,8 @@ let g:shell_mappings_enabled=0
 
 source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
+source $HOME/myvim/vimrc_unite
+source $HOME/myvim/vimrc_ctrlp
 filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
@@ -277,8 +277,8 @@ endfunction
 :command! -range Ee <line1>,<line2>!python c:/wxm/mytools/extractEeprom.py
 
 "force to use python27 32 bit version
-let g:ycm_path_to_python_interpreter = 'c:/Python27/pythonw.exe'
-let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
+"let g:ycm_path_to_python_interpreter = 'c:/Python27/pythonw.exe'
+"let g:ycm_global_ycm_extra_conf = '~/myvim/.ycm_extra_conf.py'
 " {{{ folding
 nnoremap zO zCzO
 
@@ -286,4 +286,58 @@ nnoremap zO zCzO
 nnoremap <leader>Z zMzvzz
 " }}}
 let g:html_use_xhtml = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'powerlineish'
+let g:airline#extensions#tmuxline#enabled = 0
+let g:ctrlspace_default_mapping_key='<leader>i'
+let g:tmuxcomplete#trigger = ''
+
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/myvim/bundle/vim-snippets/snippets,~/myvim/mysnippets/neosnippets'
+
+let g:marching_enable_neocomplete = 1
+"let g:marching_include_paths = [
+            "\ "/usr/include/c++/4.2.1" ]
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+
+let g:neocomplete#force_omni_input_patterns.cpp =
+    \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+   if exists(':NeoCompleteLock')==2
+       exe 'NeoCompleteLock'
+    endif
+endfunction
+
+"         " Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+    if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+    endif
+endfunction
+
+let g:loaded_netrwPlugin = 1
+let g:vimfiler_as_default_explorer = 1
+
 "/* vim: set foldmethod=marker: */
