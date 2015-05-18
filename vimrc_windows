@@ -81,8 +81,13 @@ NeoBundle 'vim-scripts/stlrefvim'
 "NeoBundle 'jonathanfilip/vim-lucius'
 "NeoBundle 'zaiste/Atom'
 NeoBundle 'tomasr/molokai'
- NeoBundle 'Shougo/neosnippet.vim'
- NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'szw/vim-ctrlspace'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Shougo/vimfiler.vim'
+NeoBundle 'wellle/targets.vim'
+NeoBundle 'honza/vim-snippets'
 "Bundle 'ZoomWin'
 
  " You can specify revision/branch/tag.
@@ -111,10 +116,11 @@ autocmd!
 " disable menu & toolbar
 set guioptions-=m
 set guioptions-=T
-set gfn=Monaco:h10
+"set gfn=Monaco:h10
+set gfn=Ubuntu_Mono_derivative_Powerlin:h12
 
 " make vim window maximized when startup
-"autocmd GUIEnter * simalt ~x
+autocmd GUIEnter * simalt ~x
 "}}}
 
 " {{{ SVN related mappings
@@ -340,4 +346,11 @@ endfunction
 let g:loaded_netrwPlugin = 1
 let g:vimfiler_as_default_explorer = 1
 
+let g:unite_source_grep_command =ag
+let g:unite_source_grep_default_opts =
+\ '--line-numbers --nocolor --nogroup --hidden --ignore ' .
+\  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+let g:unite_source_grep_recursive_opt = ''
+
+let g:ctrlspace_load_last_workspace_on_start=1
 "/* vim: set foldmethod=marker: */

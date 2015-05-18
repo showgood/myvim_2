@@ -13,4 +13,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.exe$\|\.so$\|\.dll$|\.obj$|\.dep$',
   \ }
 nnoremap <unique> <F5> :CtrlPClearCache<cr>
+let g:ctrlp_max_files = 0
+
 "}}}
