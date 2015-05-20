@@ -1,3 +1,30 @@
+snippet     ins
+abbr        #include <stdheader>
+options     head
+    #include <${1:iostream}>
+    ${2}
+
+snippet     if
+abbr        if (this) {}
+options     head
+    if (${1:0})
+    {
+        ${2}
+    }
+
+snippet     vv
+abbr        vector<vector<T>>
+    vector<vector<${1:string}>> ${2:result};
+    ${3:}
+
+snippet     wh
+abbr        while (cond) {}
+options     head
+    while (${1:cond})
+    {
+        ${2}
+    }
+
 snippet ifd
 abbr inclusion guard
     #ifndef `toupper(substitute(expand('%:t'), '\.', "_", "g"))`
