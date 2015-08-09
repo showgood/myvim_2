@@ -40,7 +40,7 @@ NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'xolox/vim-misc' "needed by xolox/vim-shell
 NeoBundle 'xolox/vim-shell'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'bling/vim-airline'  "not very useful to me
+NeoBundle 'bling/vim-airline'
 "NeoBundleDisable 'terryma/vim-expand-region'
 NeoBundle 'mbbill/undotree'
 "NeoBundleDisable 'chrisbra/csv.vim'
@@ -60,7 +60,7 @@ NeoBundle 'rhysd/vim-clang-format'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'edkolev/tmuxline.vim'
-NeoBundle 'szw/vim-ctrlspace'
+"NeoBundle 'szw/vim-ctrlspace'
 NeoBundle 'wellle/tmux-complete.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'osyo-manga/vim-marching'
@@ -82,13 +82,9 @@ NeoBundleCheck
 
 autocmd!
 
-:command -nargs=0 GUI :cd $OPTIMA_GUI
-:command -nargs=0 MB :cd $OPTIMA_MB
-
 set clipboard=unnamed
 set clipboard+=unnamedplus
 set clipboard+=autoselect
-set gfn=Monaco\ 11
 
 "{{{appearance configuration
 " those are acceptable colorschemes I have tried
@@ -134,14 +130,13 @@ let g:shell_mappings_enabled=0
 
 source $HOME/myvim/vimrc_common
 source $HOME/myvim/functions.vim
+source $HOME/myvim/vimrc_unite
+source $HOME/myvim/vimrc_ctrlp
+
 filetype off
 
 :command -nargs=0 Comp :call CompareSideBySide()
-:command -nargs=0 Bc :call xolox#shell#execute("BComp.exe ".expand('%:p'), 0)
 vmap <leader>g <Esc>:OpenUrl <c-r>=GetVisual("false")<cr><cr>
-:command -nargs=0 Excel :!start C:/Program Files/Microsoft Office/Office12/EXCEL.EXE %:p
-
-let g:vimshell_vimshrc_path='~/myvim/.vimshrc_windows'
 
 let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes', '~/Dropbox/Write']
 let g:notes_suffix = '.note'
@@ -189,17 +184,6 @@ function! Backup(file)
         exec 'w '.bak
     endif
 endfunction
-
-function! DecodeOptLog(log)
-    call Backup(a:log)
-    let decoder=$HOME.'wxm/mytools/DecodeOptLog.py'
-    exec '%!python '.decoder
-    exec 'highlight WARN ctermbg=red guibg=red'
-    exec 'match WARN /.*Assertion.*/'
-endfunction
-
-"decode timestamp in optima.log
-:command -nargs=0 Dl :call DecodeOptLog(expand('%:p'))
 
 function! ReadEvent(event)
     call Backup(a:event)
