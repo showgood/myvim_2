@@ -20,7 +20,7 @@ call neobundle#rc(expand('$HOME/myvim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'terryma/vim-multiple-cursors' 
-NeoBundle 'xolox/vim-notes'
+"NeoBundle 'xolox/vim-notes'
 NeoBundle 'Shougo/vimproc.vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -116,8 +116,6 @@ set gfn=Monaco:h12
 nnoremap <leader>ev <C-w><C-v><C-l>:e ~/myvim/vimrc_mac<cr>
 syn on
 
-let g:notes_directories = ['~/Dropbox/RMD_notes', '~/Dropbox/trunksync/notes']
-let g:notes_suffix = '.txt'
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'powerlineish'
 let g:airline#extensions#tmuxline#enabled = 0
